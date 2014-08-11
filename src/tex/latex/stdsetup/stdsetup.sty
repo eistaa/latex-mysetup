@@ -18,6 +18,14 @@
 \providebool{@mathletters}
 \booltrue   {@mathletters}
 \DeclareOption{nomathletters}{ \boolfalse{@mathletters} }
+% whether to load subcaption
+\providebool{@subcaption}
+\booltrue   {@subcaption}
+\DeclareOption{nosubcaption}{ \boolfalse{@subcaption} }
+% whether to load subcaption
+\providebool{@enumerating}
+\booltrue   {@enumerating}
+\DeclareOption{noenum}{ \boolfalse{@enumerating} }
 
 %% execute default options
 
@@ -34,8 +42,10 @@
 % color
 \RequirePackage[usenames,dvipsnames,svgnames,table]{xcolor}
 
-% lists
-\RequirePackage[inline]{enumitem}       % more control over lists
+\ifbool{@enumerating}{
+    % lists
+    \RequirePackage[inline]{enumitem}   % more control over lists
+}{ }
 
 % math
 \RequirePackage{amsmath}                % ams math
@@ -47,7 +57,9 @@
 
 % graphics
 \RequirePackage{graphicx}               % insert images
-\RequirePackage{subcaption}             % subfigures and subtables
+\ifbool{@subcaption}{
+    \RequirePackage{subcaption}         % subfigures and subtables
+}{ }
 
 % other/unsorted
 \RequirePackage{algorithm2e}            % typesetting algorithms
@@ -99,13 +111,15 @@
 
 %% ----- environments
 
-%% list environment with roman numerals
-\newenvironment{romanenum}% roman numerals
-    {\begin{enumerate}[label=\emph{\roman*})]}% before
-    {\end{enumerate}}% after
-\newenvironment{romanenuminline}% inline roman numerals
-    {\begin{enumerate*}[label=\emph{\roman*})]}% before
-    {\end{enumerate*}}% after
+\ifbool{@enumerating}{
+    %% list environment with roman numerals
+    \newenvironment{romanenum}% roman numerals
+        {\begin{enumerate}[label=\emph{\roman*})]}% before
+        {\end{enumerate}}% after
+    \newenvironment{romanenuminline}% inline roman numerals
+        {\begin{enumerate*}[label=\emph{\roman*})]}% before
+        {\end{enumerate*}}% after
+}{ }
 
 %%   +----------+
 %% ----- math ----- %% --------------------------------------------------------
