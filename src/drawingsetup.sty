@@ -1,0 +1,53 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{drawingsetup}
+
+\RequirePackage{etoolbox}               % logic & booleans
+
+
+%%   /-----------\
+%% --+-- setup --+-- %% -------------------------------------------------------
+%%   \-----------/
+
+
+%% ----- declare options
+
+% xcolor options
+\DeclareOption{xcolor}{ \PassOptionToPackage{\CurrentOption}{xcolor} }
+
+% tikz libraries
+\DeclareOption{tikzlib}{ \let\@tikzlib\CurrentOption }
+
+% fallback
+\DeclareOption*{
+    \ClassWarning{drawingsetup}{Unknown option '\CurrentOption'}
+}
+
+%% ----- execute default options
+
+\ExecuteOptions{xcolor={usenames,dvipsnames,svgnames,table}}
+\ExecuteOptions{tikzlib={arrows,shapes,backgrounds}}
+
+%% ----- process given options
+
+\ProcessOptions\relax
+
+
+%%   /--------------\
+%% --+-- packages --+-- %% ----------------------------------------------------
+%%   \--------------/
+
+
+\RequirePackage{xcolor}                 % colors!!!
+\RequirePackage{tikz}                   % TikZ
+
+
+%%   /----------------\
+%% --+-- tikz setup --+-- %% --------------------------------------------------
+%%   \----------------/
+
+
+% load tikz libraries
+\usetikzlibrary{\@tikzlib}
+
+\endinput
+
