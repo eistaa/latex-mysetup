@@ -15,21 +15,21 @@ CODESETUPFILES = codesetup.sty
 STDSETUPDIR    = $(TEXMF)/$(TEXMFSUFFIX)/stdsetup
 STDSETUPFILES  = stdsetup.sty mathletters.sty
 
-TIKZSETUPDIR   = $(TEXMF)/$(TEXMFSUFFIX)/tikzsetup
-TIKZSETUPFILES = tikzsetup.sty
+DRAWINGSETUPDIR   = $(TEXMF)/$(TEXMFSUFFIX)/drawingsetup
+DRAWINGSETUPFILES = drawingsetup.sty
 
 ## ----------------------------------------
 
-ARTICLESRC   = $(patsubst %,$(SRCDIR)/%,$(ARTICLEFILES))
-CODESETUPSRC = $(patsubst %,$(SRCDIR)/%,$(CODESETUPFILES))
-STDSETUPSRC  = $(patsubst %,$(SRCDIR)/%,$(STDSETUPFILES))
-TIKZSETUPSRC = $(patsubst %,$(SRCDIR)/%,$(TIKZSETUPFILES))
+ARTICLESRC      = $(patsubst %,$(SRCDIR)/%,$(ARTICLEFILES))
+CODESETUPSRC    = $(patsubst %,$(SRCDIR)/%,$(CODESETUPFILES))
+STDSETUPSRC     = $(patsubst %,$(SRCDIR)/%,$(STDSETUPFILES))
+DRAWINGSETUPSRC = $(patsubst %,$(SRCDIR)/%,$(DRAWINGSETUPFILES))
 
 ## ----------------------------------------
 
-.PHONY: install article std code tikz
+.PHONY: install article std code drawing
 
-install: article std code tikz
+install: article std code drawing
 	texhash $(TEXMF)
 
 article: $(ARTICLESRC) | $(ARTICLEDIR)
@@ -47,8 +47,8 @@ code: $(CODESETUPSRC) | $(CODESETUPDIR)
 $(CODESETUPDIR):
 	mkdir -p $(CODESETUPDIR)
 
-tikz: $(TIKZSETUPSRC) | $(TIKZSETUPDIR)
-	cp -p $(TIKZSETUPSRC) $(TIKZSETUPDIR)
-$(TIKZSETUPDIR):
-	mkdir -p $(TIKZSETUPDIR)
+drawing: $(DRAWINGSETUPSRC) | $(DRAWINGSETUPDIR)
+	cp -p $(DRAWINGSETUPSRC) $(DRAWINGSETUPDIR)
+$(DRAWINGSETUPDIR):
+	mkdir -p $(DRAWINGSETUPDIR)
 
