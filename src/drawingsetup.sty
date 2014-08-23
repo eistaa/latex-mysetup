@@ -1,7 +1,5 @@
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{drawingsetup}
-
-\RequirePackage{etoolbox}               % logic & booleans
+\ProvidesPackage{drawingsetup}[2014/08/22, My personal drawing setup]
 
 
 %%   /-----------\
@@ -9,27 +7,36 @@
 %%   \-----------/
 
 
-%% ----- declare options
+\RequirePackage{kvoptions}              % key-value options
 
-% xcolor options
-\DeclareOption{xcolor}{ \PassOptionToPackage{\CurrentOption}{xcolor} }
-
-% tikz libraries
-\DeclareOption{tikzlib}{ \let\@tikzlib\CurrentOption }
-
-% fallback
-\DeclareOption*{
-    \ClassWarning{drawingsetup}{Unknown option '\CurrentOption'}
+\SetupKeyvalOptions{%
+    family=drawingsetup,%
+    prefix=drawingsetup@%
 }
 
-%% ----- execute default options
+%% ----- declare options
 
-\ExecuteOptions{xcolor={usenames,dvipsnames,svgnames,table}}
-\ExecuteOptions{tikzlib={arrows,shapes,backgrounds}}
+% load tikz
+\DeclareBoolOption[false]{tikz}
+
+% xcolor options
+\DeclareStringOption[{usenames,dvipsnames,svgnames,table}]{xcolor}[]
+
+% tikz libraries
+\DeclareStringOption[{arrows,shapes,backgrounds}]{tikzlibs}[]
+
+% fallback
+\DeclareDefaultOption{%
+    \@unknownoptionerror
+}
 
 %% ----- process given options
 
-\ProcessOptions\relax
+\ProcessKeyvalOptions*
+
+%% ----- actions on options
+
+\PassOptionsToPackage{\drawingsetup@xcolor}{xcolor}
 
 
 %%   /--------------\
@@ -38,7 +45,6 @@
 
 
 \RequirePackage{xcolor}                 % colors!!!
-\RequirePackage{tikz}                   % TikZ
 
 
 %%   /----------------\
@@ -46,8 +52,12 @@
 %%   \----------------/
 
 
-% load tikz libraries
-\usetikzlibrary{\@tikzlib}
+\ifdrawingsetup@tikz
+    \RequirePackage{tikz}                   % TikZ
+
+    % load tikz libraries
+    \usetikzlibrary{\drawingsetup@tikzlibs}
+\fi
 
 \endinput
 
