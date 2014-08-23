@@ -1,39 +1,48 @@
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesPackage{codesetup}[2014/08/22, My personal code setup]
 
-\RequirePackage{etoolbox}               % logic & booleans
-
 
 %%   /-----------\
 %% --+-- setup --+-- %% -------------------------------------------------------
 %%   \-----------/
 
 
+\RequirePackage{kvoptions}              % key-value options
+
+\SetupKeyvalOptions{%
+    family=codesetup,%
+    prefix=codesetup@%
+}
+
 %% ----- declare options
 
 % load listings
-\providebool{@listings}\boolfalse{@listings}
-\DeclareOption{listings}{ \booltrue{@listings} }
+\DeclareBoolOption[false]{listings}
 % load minted
-\providebool{@minted}\boolfalse{@minted}
-\DeclareOption{minted}{ \booltrue{@minted} }
+\DeclareBoolOption[false]{minted}
+
+% load beramono
+\DeclareStringOption[]{beramono}[{scaled}]
+% load fontenc - ignored if beramono option is false
+\DeclareBoolOption[false]{nofontenc}
+\DeclareStringOption[{T1}]{fontenc}[{T1}]
 
 % margin extension
-\newlength{\codesetupxmargin}\setlength{\codesetupxmargin}{0mm}
-\DeclareOption{xmargins}{ \setlength{\codesetupxmargin}{-2cm} }
+\DeclareStringOption[0mm]{xmargins}[-2cm]
 
 % fallback
-\DeclareOption*{
-    \ClassWarning{codesetup}{Unknown option '\CurrentOption'}
+\DeclareDefaultOption{%
+    \@unknownoptionerror
 }
-
-%% ----- execute default options
-
-\ExecuteOptions{xmargins}
 
 %% ----- process given options
 
-\ProcessOptions\relax
+\ProcessKeyvalOptions*
+
+%% ----- actions on options
+
+\newlength{\codexmargins}
+\setlength{\codexmargins}{\codesetup@xmargins}
 
 
 %%   /--------------\
@@ -41,8 +50,14 @@
 %%   \--------------/
 
 
-\RequirePackage[T1]{fontenc}            % encode fonts
-\RequirePackage[scaled]{beramono}       % monospacefont supporting boldface
+\ifx\codesetup@beramono\@empty
+\else
+    \ifcodesetup@nofontenc
+    \else
+        \RequirePackage[\codesetup@fontenc]{fontenc}  % encode fonts
+    \fi
+    \RequirePackage[\codesetup@beramono]{beramono}    % monospacefont supporting boldface
+\fi
 
 \RequirePackage{xcolor}                 % colors!
 
@@ -52,7 +67,7 @@
 %%   \--------------------/
 
 
-\ifbool{@listings}{
+\ifcodesetup@listings
     \RequirePackage{listings}           % listings
 
     %% ----- colors
@@ -76,29 +91,29 @@
         numberstyle=\tiny\ttfamily\color{linenumcolor},  % the style that is used for the line-numbers
         rulecolor=\color{rulecolor},                     % if not set, the frame-color may be changed on line-breaks within not-black text
         stepnumber=2,                                    % the step between two line-numbers. If it's 1, each line will be numbered
-    
+
         %% breaking
         breaklines=true,         % sets automatic line breaking
         breakatwhitespace=true,  % sets if automatic breaks should only happen at whitespace
         breakindent=2cm,         % indentation of broken lines
-    
+
         %% caption
         captionpos=t,  % sets the caption-position to bottom
-    
+
         %% charset
         extendedchars=true,  % lets you use non-ASCII characters; for 8-bits encodings only, does not work with UTF-8
-    
+
         %% keywords
         deletekeywords={},  % if you want to delete keywords from the given language
         morekeywords={},    % if you want to add more keywords to the set
-    
+
         %% spaces and tabs
         keepspaces=true,         % keeps spaces in text, useful for keeping indentation of code (possibly needs columns=flexible)
         showspaces=false,        % show spaces everywhere adding particular underscores; it overrides 'showstringspaces'
         showstringspaces=false,  % underline spaces within strings only
         showtabs=false,          % show tabs within strings adding particular underscores
         tabsize=4,               % sets default tabsize (number of spaces)
-    
+
         %% style
         backgroundcolor=\color{backgroundcolor},     % choose the background color
         basicstyle=\footnotesize\ttfamily,           % general style settings
@@ -106,20 +121,17 @@
         identifierstyle=\color{identifiercolor},     % non-keyword style
         keywordstyle=\bfseries\color{keywordcolor},  % keyword style
         stringstyle=\color{stringcolor},             % string literal style
-    }
 
-    \ifbool{@xmargins}{%
-        \lstset{%
-            %% margins -- negative means extend margins
-            xleftmargin=\@codexmargin,   % change in left margin
-            xrightmargin=\@codexmargin,  % change in right margin
-        }%
-    }{ }
+        %% margins -- negative means extend margins
+        xleftmargin=\codexmargins,   % change in left margin
+        xrightmargin=\codexmargins,  % change in right margin
+    }
 
     %% ----- styles
 
     %% style coloring numbers -- the leading * makes it ignore strings and comments
     %%                        -- format: {to replace}{replacement}{length}
+    %% Use with care! Not perfect, needs more work
     \lstdefinestyle{numbercolor}{%
         literate=%
            *{0}{{{\color{numbercolor}{0}}}}{1} {.0}{{{\color{numbercolor}{.0}}}}{2} {0.}{{{\color{numbercolor}{0.}}}}{2}%
@@ -132,10 +144,10 @@
             {7}{{{\color{numbercolor}{7}}}}{1} {.7}{{{\color{numbercolor}{.7}}}}{2} {7.}{{{\color{numbercolor}{7.}}}}{2}%
             {8}{{{\color{numbercolor}{8}}}}{1} {.8}{{{\color{numbercolor}{.8}}}}{2} {8.}{{{\color{numbercolor}{8.}}}}{2}%
             {9}{{{\color{numbercolor}{9}}}}{1} {.9}{{{\color{numbercolor}{.9}}}}{2} {9.}{{{\color{numbercolor}{9.}}}}{2}%
-            %%
+            %
             {\ }{{{ }}}{1}% handle space correct
-    }%
-}
+    }
+\fi
 
 
 %%   /------------------\
@@ -143,7 +155,7 @@
 %%   \------------------/
 
 
-\ifbool{@minted}{
+\ifcodesetup@minted
     \RequirePackage{minted}             % minted
 
     \usemintedstyle{trac}
@@ -161,10 +173,10 @@
     \edef\mintedoptions{%
         linenos,                % line numbers
         numberblanklines=true,  % number blank lines
-        numbersep=12pt,         % distance between numbers and start of line
+        numbersep=10pt,         % distance between numbers and start of line
         stepnumber=2,           % interval at which line numbers appear
         %
-        fontfamily=fvm,            % font family
+        fontfamily=tt,             % font family
         fontsize=\noexpand\small,  % font size
         %
         frame=leftline,   % frame type
@@ -173,13 +185,12 @@
         obeytabs=false,   % whether to obey tabs instead of converting to spaces
         tabsize=4,        % number of spaces a tab is equivalent to
         %
-        xleftmargin=\codesetupxmargin,  % modify left margin
-        xrightmargin=\codesetupxmargin  % modify right margin
+        xleftmargin=\codexmargins,  % modify left margin
+        xrightmargin=\codexmargins  % modify right margin
     }
     \newcommand{\defaultinputminted}[2]%
-    { \expandafter\inputminted\expandafter[\mintedoptions]{#1}{#2} }
-
-}{ }
+        { \expandafter\inputminted\expandafter[\mintedoptions]{#1}{#2} }
+\fi
 
 \endinput
 
