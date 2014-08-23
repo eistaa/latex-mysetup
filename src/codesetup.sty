@@ -22,10 +22,9 @@
 \DeclareBoolOption[false]{minted}
 
 % load beramono
-\DeclareStringOption[]{beramono}[{scaled}]
+\DeclareBoolOption[false]{beramono}
 % load fontenc - ignored if beramono option is false
 \DeclareBoolOption[false]{nofontenc}
-\DeclareStringOption[{T1}]{fontenc}[{T1}]
 
 % margin extension
 \DeclareStringOption[0mm]{xmargins}[-2cm]
@@ -50,13 +49,13 @@
 %%   \--------------/
 
 
-\ifx\codesetup@beramono\@empty
+\ifcodesetup@beramono
 \else
     \ifcodesetup@nofontenc
     \else
-        \RequirePackage[\codesetup@fontenc]{fontenc}  % encode fonts
+        \RequirePackage[T1]{fontenc}    % encode fonts
     \fi
-    \RequirePackage[\codesetup@beramono]{beramono}    % monospacefont supporting boldface
+    \RequirePackage[scaled]{beramono}   % monospacefont supporting boldface
 \fi
 
 \RequirePackage{xcolor}                 % colors!
