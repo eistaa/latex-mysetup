@@ -1,125 +1,159 @@
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{myarticle}
-
-\RequirePackage{etoolbox}               % logic & booleans
+\ProvidesClass{myarticle}[2014/08/22, My personal article class]
 
 
-%%   +-----------+
-%% ----- setup ----- %% -------------------------------------------------------
-%%   +-----------+
+%%   /-----------\
+%% --+-- setup --+-- %% -------------------------------------------------------
+%%   \-----------/
 
 
-%% ----- setup options
+\RequirePackage{kvoptions}              % key-value options
 
-%% defaults
-\PassOptionsToClass  {11pt}   {article}
-\PassOptionsToClass  {twoside}{article}
-\PassOptionsToClass  {a4paper}{article}
-\PassOptionsToPackage{a4paper}{geometry}
+\SetupKeyvalOptions{%
+    family=myarticle,%
+    prefix=myarticle@%
+}
 
-%% declare options
+%% ----- declare options
+
 % load my standard setup
-\providebool{@stdsetup}
-\boolfalse  {@stdsetup}
-\DeclareOption{stdsetup}{ \booltrue{@stdsetup} }
-\DeclareOption{nomathletters}{ \PassOptionToPackage{nomathletters}{stdsetup} }
-% whether to load my code setup
-\providebool{@codesetup}
-\boolfalse  {@codesetup}
-\DeclareOption{codesetup}{ \booltrue{@codesetup} }
-% whether to load my tikz setup
-\providebool{@tikzsetup}
-\boolfalse  {@tikzsetup}
-\DeclareOption{tikzsetup}{ \booltrue{@tikzsetup} }
+\DeclareStringOption{stdsetup}[{%
+        math,theorems,text,figures,%
+        enumitem={inline}%
+    }]
+% load my code setup
+\DeclareStringOption{codesetup}[{%
+        minted,xmargins=-2cm%
+    }]
+% load my drawing setup
+\DeclareStringOption{drawingsetup}[%
+        tikz%
+    ]
+
 % whether to use normal fonts (default is to use special setup)
-\providebool{@normalfont}
-\boolfalse  {@normalfont}
-\DeclareOption{normalfont}{ \booltrue{@normalfont} }
+\DeclareBoolOption[false]{normalfonts}
 
-%% execute default options
+% language
+\DeclareStringOption[english]{language}
 
-%% process given options
+% xcolor options
+\DeclareStringOption[{usenames,dvipsnames,svgnames,table}]{xcolor}
 
-\ProcessOptions\relax
+% fallback
+\DeclareDefaultOption{%
+    \@unknownoptionerror
+}
+
+%% ----- process given options
+
+\ProcessKeyvalOptions*
+
+%% ----- package & class options
+
+%% setup
+
+\PassOptionsToClass{11pt}{article}
+\PassOptionsToPackage{a4paper,twoside,hmarginratio=1:1,margin=1.5in,headheight=15.0pt}%
+                     {geometry}
+\PassOptionsToPackage{\myarticle@language}{babel}
+
+%% my classes
+
+\PassOptionsToPackage{\myarticle@stdsetup}{stdsetup}
+
+\PassOptionsToPackage{\myarticle@codesetup}{codesetup}
+\PassOptionsToPackage{beramono=false}{codesetup}  % do it in this class instead
+
+\PassOptionsToPackage{\myarticle@drawingsetup}{drawingsetup}
+\PassOptionsToPackage{xcolor={\myarticle@xcolor}}{drawingsetup}
 
 
-%% ----- load base class & packages
+%%   /---------------------------\
+%% --+-- base class & packages --+-- %% ---------------------------------------
+%%   \---------------------------/
+
 
 %% load base class
 \LoadClass{article}
 
-%% load packages
-
 % fonts
-\notbool{@normalfont}{
+\ifmyarticle@normalfonts \else
     % use special fonts
     \RequirePackage[sc]{mathpazo}       % use adobe palatino familly of fonts with true small caps
     \linespread{1.05}                   % palatino needs more leading (space between lines)
     \RequirePackage[euler-hat-accent]
                    {eulervm}            % use ams euler font for math
-    \RequirePackage{beramono}           % use beramono as monospace font. supports bold and italic
-}{ }
+    \RequirePackage[scaled]{beramono}   % use beramono as monospace font. supports bold and italic
+\fi
 
 % encoding & language
-\RequirePackage[utf8]   {inputenc}      % input encoding is utf-8
-\RequirePackage[T1]     {fontenc}       % encode fonts as T1
-\RequirePackage[english]{babel}         % we write in english
+\RequirePackage[utf8]{inputenc}         % input encoding is utf-8
+\RequirePackage[T1]{fontenc}            % encode fonts as T1
+\RequirePackage{babel}                  % language
 
 % used for styling
 \RequirePackage{fancyhdr}               % to create custom header/footers
-\RequirePackage[hmarginratio=1:1,margin=1.5in,headheight=15.0pt]
-               {geometry}               % to mess with page geometry
+\RequirePackage{geometry}               % to mess with page geometry
 \RequirePackage{titlesec}               % to style sections
-\RequirePackage[inline]{enumitem}       % to style lists
+
 
 % my standard setup
-\ifbool{@stdsetup}{
+\ifx\myarticle@stdsetup\@empty \else
     \RequirePackage{stdsetup}
-}{ }
+\fi
 % my code setup
-\ifbool{@codesetup}{
+\ifx\myarticle@codesetup\@empty \else
     \RequirePackage{codesetup}
-}{ }
-% my tikz setup
-\ifbool{@tikzsetup}{ 
-    \RequirePackage{tikzsetup}
-}{ }
+\fi
+% my drawing setup
+\ifx\myarticle@drawingsetup\@empty \else
+    \RequirePackage{drawingsetup}
+\fi
+
+% load enumitem if not loaded, since styling is dependant upon it
+\@ifpackageloaded{enumitem}{ }{
+    \RequirePackage{enumitem}           % to style lists
+}
 
 
-%%   +--------------+
-%% ----- commands ----- %% ----------------------------------------------------
-%%   +--------------+
+%%   /--------------\
+%% --+-- commands --+-- %% ----------------------------------------------------
+%%   \--------------/
 
 
 %% title command (from amsart class)
-%  - defines \@shorttitle and \@title commands
+%% - defines \@shorttitle and \@title commands
 \renewcommand*{\title}[2][]{\gdef\@shorttitle{#1}\gdef\@title{#2}}
-\edef\title{\noexpand\@dblarg
+\edef\title{\noexpand\@dblarg%
     \expandafter\noexpand\csname\string\title\endcsname}
+\let\@shorttitle\@empty \let\@title\@empty
 
-% to be able to access author name in the class file
-\renewcommand*{\author}[1]{\gdef\@author{#1}\gdef\@@author{#1}}
-\let\@@author\@empty
+%% author command (based on amsart class)
+%% - allows multiple authors if called multiple times
+\renewcommand*{\author}[1]{%
+    \ifx\authors\@empty
+        \gdef\authors{#1}%
+    \else
+        \g@addto@macro\authors{\\#1}%
+    \fi}
+\let\authors\@empty
 
-% to be able to access date in the class file
-\renewcommand*{\date}[1]{\gdef\@date{#1}\gdef\@@date{#1}}
-\let\@@date\@empty
+%% wrapper around date
+\renewcommand*{\date}[1]{\gdef\@date{#1}}
+\let\@date\@empty
 
 
-%%   +-------------+
-%% ----- styling ----- %% -----------------------------------------------------
-%%   +-------------+
+%%   /-------------\
+%% --+-- styling --+-- %% -----------------------------------------------------
+%%   \-------------/
 
 
 %% ----- numbering
 
 % number within section
-\ifbool{@stdsetup}{
-    \numberwithin{equation}{section}
-}{ }
-\numberwithin{figure}{section}
+\@ifpackagewith{stdsetup}{math}{ \numberwithin{equation}{section} }{ }
+\@ifpackagewith{stdsetup}{figures}{ \numberwithin{figure}{section} }{ }
 \numberwithin{table} {section}
-
 
 %% ----- list style
 
@@ -129,7 +163,6 @@
 \setlist[itemize]    {noitemsep,topsep=0pt,parsep=0pt,partopsep=0pt}
 % add : after description label and make it boldface
 \renewcommand{\descriptionlabel}[1]{\hspace{\labelsep}\textbf{#1:}}
-
 
 %% ----- header and footer
 
@@ -150,7 +183,7 @@
 \fancypagestyle{plain}{%
     \fancyhf{} % clear
     % only date on first page
-    \fancyfoot[L]{\ifthenelse{\value{page}=1}{\textit{Date:} \@@date}{}}
+    \fancyfoot[L]{\ifthenelse{\value{page}=1}{\textit{Date:}\@date}{}}
     % pagenumber on every page
     \fancyfoot[C]{\thepage}
     % no header line but this footer line
@@ -164,11 +197,11 @@
 \renewcommand{\maketitle}{
     \thispagestyle{plain}
     \begin{center}
-        \rule{0.7\textwidth}{0.5pt} \\
-        \Large\sc\@title            \\
-        \rule{0.7\textwidth}{0.5pt} \\
+        \rule{1\textwidth}{0.8pt} \\
+        \Large\sc\@title          \\
+        \rule{1\textwidth}{0.8pt} \\
         \vskip 1em
-        \large\sc\@@author
+        \large\sc\authors
         \vskip 5em
     \end{center}
 }
