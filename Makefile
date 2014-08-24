@@ -1,13 +1,18 @@
 
-TEXMF := $(shell kpsewhich --expand-path='$$TEXMFHOME')
+COPY    := cp
+MKDIR   := mkdir -p  # also make parent directories as needed
+TEXHASH := texhash
+
+# change this line to determine where to install
+TEXMF := $(shell kpsewhich -var-value=TEXMFHOME)
 TEXMFSUFFIX = tex/latex
 
 ## ----------------------------------------
 
 SRCDIR         = ./src
 
-ARTICLEDIR     = $(TEXMF)/$(TEXMFSUFFIX)/base
-ARTICLEFILES   = eistaart.cls
+CLASSDIR       = $(TEXMF)/$(TEXMFSUFFIX)/base
+CLASSFILES     = eistaart.cls
 
 CODESETUPDIR   = $(TEXMF)/$(TEXMFSUFFIX)/eistaacode
 CODESETUPFILES = eistaacode.sty
@@ -20,7 +25,7 @@ DRAWINGSETUPFILES = eistaadrawing.sty
 
 ## ----------------------------------------
 
-ARTICLESRC      = $(patsubst %,$(SRCDIR)/%,$(ARTICLEFILES))
+CLASSSRC        = $(patsubst %,$(SRCDIR)/%,$(CLASSFILES))
 CODESETUPSRC    = $(patsubst %,$(SRCDIR)/%,$(CODESETUPFILES))
 STDSETUPSRC     = $(patsubst %,$(SRCDIR)/%,$(STDSETUPFILES))
 DRAWINGSETUPSRC = $(patsubst %,$(SRCDIR)/%,$(DRAWINGSETUPFILES))
@@ -30,25 +35,25 @@ DRAWINGSETUPSRC = $(patsubst %,$(SRCDIR)/%,$(DRAWINGSETUPFILES))
 .PHONY: install article std code drawing
 
 install: article std code drawing
-	texhash $(TEXMF)
+	$(TEXHASH) $(TEXMF)
 
-article: $(ARTICLESRC) | $(ARTICLEDIR)
-	cp -p $(ARTICLESRC) $(ARTICLEDIR)
-$(ARTICLEDIR):
-	mkdir -p $(ARTICLEDIR)
+article: $(CLASSSRC) | $(CLASSDIR)
+	$(COPY) $(CLASSSRC) $(CLASSDIR)
+$(CLASSDIR):
+	$(MKDIR) $(CLASSDIR)
 
 std: $(STDSETUPSRC) | $(STDSETUPDIR)
-	cp -p $(STDSETUPSRC) $(STDSETUPDIR)
+	$(COPY) $(STDSETUPSRC) $(STDSETUPDIR)
 $(STDSETUPDIR):
-	mkdir -p $(STDSETUPDIR)
+	$(MKDIR) $(STDSETUPDIR)
 
 code: $(CODESETUPSRC) | $(CODESETUPDIR)
-	cp -p $(CODESETUPSRC) $(CODESETUPDIR)
+	$(COPY) $(CODESETUPSRC) $(CODESETUPDIR)
 $(CODESETUPDIR):
-	mkdir -p $(CODESETUPDIR)
+	$(MKDIR) $(CODESETUPDIR)
 
 drawing: $(DRAWINGSETUPSRC) | $(DRAWINGSETUPDIR)
-	cp -p $(DRAWINGSETUPSRC) $(DRAWINGSETUPDIR)
+	$(COPY) $(DRAWINGSETUPSRC) $(DRAWINGSETUPDIR)
 $(DRAWINGSETUPDIR):
-	mkdir -p $(DRAWINGSETUPDIR)
+	$(MKDIR) $(DRAWINGSETUPDIR)
 
