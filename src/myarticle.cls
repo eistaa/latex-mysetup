@@ -1,5 +1,21 @@
+%% myarticle.cls
+%% Copyright 2014 -- Eivind Storm Aarnæs
+%
+% This work may be distributed and/or modified under the conditions of the
+% LaTeX Project Public License, either version 1.3 of this license or (at your
+% option) any later version. The latest version of this license is in
+%   http://www.latex-project.org/lppl.txt
+% and version 1.3 or later is part of all distributions of LaTeX version
+% 2005/12/01 or later.
+%
+% This work has the LPPL maintenance status `maintained'.
+% 
+% The Current Maintainer of this work is Eivind Storm Aarnæs.
+%
+% This work consists of the files myarticle.cls, stdsetup.sty, codesetup.sty,
+% drawingsetup.sty and mathletters.sty.
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{myarticle}[2014/08/22, My personal article class]
+\ProvidesClass{myarticle}[2014/08/24 v1.0 My personal article class]
 
 
 %%   /-----------\
@@ -121,14 +137,14 @@
 %%   \--------------/
 
 
-%% title command (from amsart class)
+%% title command (from amsart class, http://ctan.org/pkg/amsart)
 %% - defines \@shorttitle and \@title commands
 \renewcommand*{\title}[2][]{\gdef\@shorttitle{#1}\gdef\@title{#2}}
 \edef\title{\noexpand\@dblarg%
     \expandafter\noexpand\csname\string\title\endcsname}
 \let\@shorttitle\@empty \let\@title\@empty
 
-%% author command (based on amsart class)
+%% author command (based on amsart class, http://ctan.org/pkg/amsart)
 %% - allows multiple authors if called multiple times
 \renewcommand*{\author}[1]{%
     \ifx\authors\@empty
