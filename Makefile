@@ -7,16 +7,16 @@ TEXMFSUFFIX = tex/latex
 SRCDIR         = ./src
 
 ARTICLEDIR     = $(TEXMF)/$(TEXMFSUFFIX)/base
-ARTICLEFILES   = myarticle.cls
+ARTICLEFILES   = eistaart.cls
 
-CODESETUPDIR   = $(TEXMF)/$(TEXMFSUFFIX)/codesetup
-CODESETUPFILES = codesetup.sty
+CODESETUPDIR   = $(TEXMF)/$(TEXMFSUFFIX)/eistaacode
+CODESETUPFILES = eistaacode.sty
 
-STDSETUPDIR    = $(TEXMF)/$(TEXMFSUFFIX)/stdsetup
-STDSETUPFILES  = stdsetup.sty mathletters.sty
+STDSETUPDIR    = $(TEXMF)/$(TEXMFSUFFIX)/eistaasetup
+STDSETUPFILES  = eistaasetup.sty mathletters.sty
 
-DRAWINGSETUPDIR   = $(TEXMF)/$(TEXMFSUFFIX)/drawingsetup
-DRAWINGSETUPFILES = drawingsetup.sty
+DRAWINGSETUPDIR   = $(TEXMF)/$(TEXMFSUFFIX)/eistaadrawing
+DRAWINGSETUPFILES = eistaadrawing.sty
 
 ## ----------------------------------------
 

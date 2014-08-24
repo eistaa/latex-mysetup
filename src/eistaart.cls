@@ -1,21 +1,21 @@
-%% myarticle.cls
+%% eistaart.cls
 %% Copyright 2014 -- Eivind Storm Aarnæs
-%
-% This work may be distributed and/or modified under the conditions of the
-% LaTeX Project Public License, either version 1.3 of this license or (at your
-% option) any later version. The latest version of this license is in
-%   http://www.latex-project.org/lppl.txt
-% and version 1.3 or later is part of all distributions of LaTeX version
-% 2005/12/01 or later.
-%
-% This work has the LPPL maintenance status `maintained'.
-% 
-% The Current Maintainer of this work is Eivind Storm Aarnæs.
-%
-% This work consists of the files myarticle.cls, stdsetup.sty, codesetup.sty,
-% drawingsetup.sty and mathletters.sty.
+%%
+%% This work may be distributed and/or modified under the conditions of the
+%% LaTeX Project Public License, either version 1.3 of this license or (at your
+%% option) any later version. The latest version of this license is in
+%%   http://www.latex-project.org/lppl.txt
+%% and version 1.3 or later is part of all distributions of LaTeX version
+%% 2005/12/01 or later.
+%%
+%% This work has the LPPL maintenance status `maintained'.
+%% 
+%% The Current Maintainer of this work is Eivind Storm Aarnæs.
+%%
+%% This work consists of the files eistaart.cls, eistaasetup.sty,
+%% eistaacode.sty, eistaadrawing.sty and mathletters.sty.
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{myarticle}[2014/08/24 v1.0 My personal article class]
+\ProvidesClass{eistaart}[2014/08/24 v1.0 My personal article class]
 
 
 %%   /-----------\
@@ -26,23 +26,23 @@
 \RequirePackage{kvoptions}              % key-value options
 
 \SetupKeyvalOptions{%
-    family=myarticle,%
-    prefix=myarticle@%
+    family=eistaart,%
+    prefix=eistaart@%
 }
 
 %% ----- declare options
 
 % load my standard setup
-\DeclareStringOption{stdsetup}[{%
+\DeclareStringOption{eistaasetup}[{%
         math,theorems,text,figures,%
         enumitem={inline}%
     }]
 % load my code setup
-\DeclareStringOption{codesetup}[{%
+\DeclareStringOption{eistaacode}[{%
         minted,xmargins=-2cm%
     }]
 % load my drawing setup
-\DeclareStringOption{drawingsetup}[%
+\DeclareStringOption{eistaadrawing}[%
         tikz%
     ]
 
@@ -71,17 +71,17 @@
 \PassOptionsToClass{11pt}{article}
 \PassOptionsToPackage{a4paper,twoside,hmarginratio=1:1,margin=1.5in,headheight=15.0pt}%
                      {geometry}
-\PassOptionsToPackage{\myarticle@language}{babel}
+\PassOptionsToPackage{\eistaart@language}{babel}
 
 %% my classes
 
-\PassOptionsToPackage{\myarticle@stdsetup}{stdsetup}
+\PassOptionsToPackage{\eistaart@eistaasetup}{eistaasetup}
 
-\PassOptionsToPackage{\myarticle@codesetup}{codesetup}
-\PassOptionsToPackage{beramono=false}{codesetup}  % do it in this class instead
+\PassOptionsToPackage{\eistaart@eistaacode}{eistaacode}
+\PassOptionsToPackage{beramono=false}{eistaacode}  % do it in this class instead
 
-\PassOptionsToPackage{\myarticle@drawingsetup}{drawingsetup}
-\PassOptionsToPackage{xcolor={\myarticle@xcolor}}{drawingsetup}
+\PassOptionsToPackage{\eistaart@eistaadrawing}{eistaadrawing}
+\PassOptionsToPackage{xcolor={\eistaart@xcolor}}{eistaadrawing}
 
 
 %%   /---------------------------\
@@ -93,7 +93,7 @@
 \LoadClass{article}
 
 % fonts
-\ifmyarticle@normalfonts \else
+\ifeistaart@normalfonts \else
     % use special fonts
     \RequirePackage[sc]{mathpazo}       % use adobe palatino familly of fonts with true small caps
     \linespread{1.05}                   % palatino needs more leading (space between lines)
@@ -114,16 +114,16 @@
 
 
 % my standard setup
-\ifx\myarticle@stdsetup\@empty \else
-    \RequirePackage{stdsetup}
+\ifx\eistaart@eistaasetup\@empty \else
+    \RequirePackage{eistaasetup}
 \fi
 % my code setup
-\ifx\myarticle@codesetup\@empty \else
-    \RequirePackage{codesetup}
+\ifx\eistaart@eistaacode\@empty \else
+    \RequirePackage{eistaacode}
 \fi
 % my drawing setup
-\ifx\myarticle@drawingsetup\@empty \else
-    \RequirePackage{drawingsetup}
+\ifx\eistaart@eistaadrawing\@empty \else
+    \RequirePackage{eistaadrawing}
 \fi
 
 % load enumitem if not loaded, since styling is dependant upon it
@@ -167,8 +167,8 @@
 %% ----- numbering
 
 % number within section
-\@ifpackagewith{stdsetup}{math}{ \numberwithin{equation}{section} }{ }
-\@ifpackagewith{stdsetup}{figures}{ \numberwithin{figure}{section} }{ }
+\@ifpackagewith{eistaasetup}{math}{ \numberwithin{equation}{section} }{ }
+\@ifpackagewith{eistaasetup}{figures}{ \numberwithin{figure}{section} }{ }
 \numberwithin{table} {section}
 
 %% ----- list style
@@ -185,7 +185,7 @@
 %% setup
 \pagestyle{fancy}
 \fancyhf{} % clear header & footer
-\renewcommand{\headrulewidth}{1pt} % 2pt thick line after header
+\renewcommand{\headrulewidth}{2pt} % 2pt thick line after header
 \renewcommand{\footrulewidth}{0pt} % no line before footer
 
 %% header

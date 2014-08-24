@@ -1,21 +1,21 @@
-%% stdsetup.sty
+%% eistaasetup.sty
 %% Copyright 2014 -- Eivind Storm Aarnæs
-%
-% This work may be distributed and/or modified under the conditions of the
-% LaTeX Project Public License, either version 1.3 of this license or (at your
-% option) any later version. The latest version of this license is in
-%   http://www.latex-project.org/lppl.txt
-% and version 1.3 or later is part of all distributions of LaTeX version
-% 2005/12/01 or later.
-%
-% This work has the LPPL maintenance status `maintained'.
-% 
-% The Current Maintainer of this work is Eivind Storm Aarnæs.
-%
-% This work consists of the files myarticle.cls, stdsetup.sty, codesetup.sty,
-% drawingsetup.sty and mathletters.sty.
+%%
+%% This work may be distributed and/or modified under the conditions of the
+%% LaTeX Project Public License, either version 1.3 of this license or (at your
+%% option) any later version. The latest version of this license is in
+%%   http://www.latex-project.org/lppl.txt
+%% and version 1.3 or later is part of all distributions of LaTeX version
+%% 2005/12/01 or later.
+%%
+%% This work has the LPPL maintenance status `maintained'.
+%% 
+%% The Current Maintainer of this work is Eivind Storm Aarnæs.
+%%
+%% This work consists of the files eistaart.cls, eistaasetup.sty,
+%% eistaacode.sty, eistaadrawing.sty and mathletters.sty.
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{stdsetup}[2014/08/24 v1.0 My personal math, text, theorem and figure setup]
+\ProvidesPackage{eistaasetup}[2014/08/24 v1.0 My personal math, text, theorem and figure setup]
 
 
 %%   /-----------\
@@ -26,8 +26,8 @@
 \RequirePackage{kvoptions}              % key-value options
 
 \SetupKeyvalOptions{%
-    family=stdsetup,%
-    prefix=stdsetup@%
+    family=eistaasetup,%
+    prefix=eistaasetup@%
 }
 
 %% ----- declare options
@@ -60,12 +60,12 @@
 
 
 % text
-\ifstdsetup@text%
-    \RequirePackage[\stdsetup@enumitem]{enumitem} % more control over lists
+\ifeistaasetup@text%
+    \RequirePackage[\eistaasetup@enumitem]{enumitem} % more control over lists
 \fi
 
 % math
-\ifstdsetup@math%
+\ifeistaasetup@math%
     \RequirePackage{amsmath}            % ams math
     \RequirePackage{amsfonts}           % ams math fonts
     \RequirePackage{amssymb}            % ams math symbols
@@ -77,13 +77,13 @@
 \fi
 
 % theorems
-\ifstdsetup@theorems%
+\ifeistaasetup@theorems%
     \RequirePackage{amsthm}             % ams theorems
     \RequirePackage{thmtools}           % more theorems!
 \fi
 
 % graphics
-\ifstdsetup@figures%
+\ifeistaasetup@figures%
     \RequirePackage{graphicx}           % insert images
     \RequirePackage{subcaption}         % subfigures and subtables
 \fi
@@ -94,7 +94,7 @@
 %%   \-------------------/
 
 
-\ifstdsetup@theorems
+\ifeistaasetup@theorems
 
     %% ----- theorem style
 
@@ -132,7 +132,7 @@
 %%   \---------------/
 
 
-\ifstdsetup@text%
+\ifeistaasetup@text%
 
     %% ----- commands
 
@@ -159,7 +159,7 @@
 %%   \----------------/
 
 
-\ifstdsetup@math
+\ifeistaasetup@math
     % halting problem
     \newcommand{\HP} {\mathcal{HP}}% halting problem
     \newcommand{\DHP}{\mathcal{DHP}}% diagonal halting problem
@@ -181,8 +181,8 @@
 
     % renewing the restriction symbol since it has to much left whitespace
     % !!! NOTE: requires amssymb package !!!
-    \let\stdsetup@oldrestr\restriction% store old restriction
-    \renewcommand{\restriction}{\!\!\stdsetup@oldrestr}% new restriction
+    \let\eistaasetup@oldrestr\restriction% store old restriction
+    \renewcommand{\restriction}{\!\!\eistaasetup@oldrestr}% new restriction
 
     % pairs in angles
     \newcommand{\pair}  [2]{\langle #1, #2\rangle}
