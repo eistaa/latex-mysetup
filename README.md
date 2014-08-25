@@ -78,5 +78,45 @@ This is a table of directly required packages:
 Usage
 -----
 
-TODO
+### `eistaasetup`
+
+```latex
+\usepackage[%
+        figures,math,theorem,text,% to load parts of the package
+        enumitem={inline}% options to enumitem
+    ]{eistaasetup}
+```
+
+#### Options
+
+ * `figures` -- Enable by passing option to package.
+   * Loads [graphix](http://ctan.org/pkg/graphicx) and [subcaption](http://ctan.org/pkg/graphicx).
+ * `math` -- Enable by passing option to package.
+   * Loads [amsmath](http://ctan.org/pkg/graphicx), [amsfonts & amssymb](http://ctan.org/pkg/amsfonts),
+     [mathtools](http://ctan.org/pkg/mathtools), [algorithm2e](http://ctan.org/pkg/algorithm2e)
+     packages.
+   * Also loads shorthands to math letters, see `mathletters`-package.
+   * Defines a lot of math operators and other math commands.
+ * `theorems` -- Enable by passing option to package.
+   * Loads [amsthm](http://ctan.org/pkg/amsthm) and [thmtools](http://ctan.org/pkg/thmtools)
+     packages.
+   * Defines and applies a theorem style where the type label hangs out in the margin.
+   * Defines the following environments: `theorem`, `definition`, `lemma`, `preposition`, `example`.
+ * `text` -- Enable by passing option to package.
+   * Loads [enumitem](http://ctan.org/pkg/enumitem) package.
+   * Defines two macros: `qte` and `itqte` for quoting text.
+   * Defines two list environments: `romanenum` and `romanenuminline`. Lists using small roman numerals,
+     the inline version is only defined if `enumitem` is loaded with `inline` option.
+ * `enumitem` -- Pass options to `enumitem` package. If not specified loaded with `inline`.
+
+### `eistaacode`
+
+
+
+### `eistaadrawing`
+
+
+
+### `eistaart`
+
 
