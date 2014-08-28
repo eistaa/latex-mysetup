@@ -22,42 +22,50 @@
 %% --+-- setup --+-- %% -------------------------------------------------------
 %%   \-----------/
 
+%% ----- needed in options
 
-\RequirePackage{kvoptions}              % key-value options
+\newlength{\codexmargins}
 
-\SetupKeyvalOptions{%
-    family=eistaacode,%
-    prefix=eistaacode@%
-}
+%% ----- load key-val stuff
+
+\RequirePackage{kvoptions-patch}        % patch key-val options (allow lists)
+\RequirePackage{xkeyval}                % key-value options
 
 %% ----- declare options
 
 % load listings
-\DeclareBoolOption[false]{listings}
+\define@boolkey{eistaacode.sty}[eistaacode@]{listings}[true]{}
 % load minted
-\DeclareBoolOption[false]{minted}
+\define@boolkey{eistaacode.sty}[eistaacode@]{minted}[true]{}
 
 % load beramono
-\DeclareBoolOption[false]{beramono}
+\define@boolkey{eistaacode.sty}[eistaacode@]{beramono}[true]{}
 % load fontenc - ignored if beramono option is false
-\DeclareBoolOption[false]{nofontenc}
+\define@boolkey{eistaacode.sty}[eistaacode@]{nofontenc}[true]{}
 
 % margin extension
-\DeclareStringOption[0mm]{xmargins}[-2cm]
+\define@key{eistaacode.sty}{xmargins}[-2cm]{%
+    \setlength{\codexmargins}{#1}
+}
 
 % fallback
-\DeclareDefaultOption{%
-    \@unknownoptionerror
+\DeclareOptionX*{%
+    \ClassWarning{eistaacode}{Unknown option '\CurrentOption'}
+}
+
+%% ----- set defaults
+
+\setkeys{eistaacode.sty}{%
+    listings=false,%
+    minted=false,%
+    beramono=false,%
+    nofontenc=false,%
+    xmargins=0mm%
 }
 
 %% ----- process given options
 
-\ProcessKeyvalOptions*
-
-%% ----- actions on options
-
-\newlength{\codexmargins}
-\setlength{\codexmargins}{\eistaacode@xmargins}
+\ProcessOptionsX*
 
 
 %%   /--------------\
@@ -66,9 +74,7 @@
 
 
 \ifeistaacode@beramono
-\else
-    \ifeistaacode@nofontenc
-    \else
+    \ifeistaacode@nofontenc \else
         \RequirePackage[T1]{fontenc}    % encode fonts
     \fi
     \RequirePackage[scaled]{beramono}   % monospacefont supporting boldface
