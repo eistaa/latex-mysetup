@@ -23,37 +23,42 @@
 %%   \-----------/
 
 
-\RequirePackage{kvoptions}              % key-value options
+%% ----- load key-val stuff
 
-\SetupKeyvalOptions{%
-    family=eistaadrawing,%
-    prefix=eistaadrawing@%
-}
+\RequirePackage{kvoptions-patch}        % patch key-val options (allow lists)
+\RequirePackage{xkeyval}                % key-value options
 
 %% ----- declare options
 
 % load tikz
-\DeclareBoolOption[false]{tikz}
+\define@boolkey{eistaadrawing.sty}[eistaadrawing@]{tikz}[true]{}
 
 % xcolor options
-\DeclareStringOption[{usenames,dvipsnames,svgnames,table}]{xcolor}
+\define@cmdkey{eistaadrawing.sty}[eistaadrawing@]{xcolor}[]{}
 
 % tikz libraries
-\DeclareStringOption[{arrows,shapes,backgrounds}]{tikzlibs}
+\define@cmdkey{eistaadrawing.sty}[eistaadrawing@]{tikzlibs}[]{}
 
 % fallback
-\DeclareDefaultOption{%
-    \@unknownoptionerror
+\DeclareOptionX*{%
+    \ClassWarning{eistaadrawing}{Unknown option '\CurrentOption'}
+}
+
+%% ----- set defaults
+
+\setkeys{eistaadrawing.sty}{%
+    tikz=false,%
+    xcolor={usenames,dvipsnames,svgnames,table},%
+    tikzlibs={arrows,shapes,backgrounds}%
 }
 
 %% ----- process given options
 
-\ProcessKeyvalOptions*
+\ProcessOptionsX*
 
 %% ----- actions on options
 
 \PassOptionsToPackage{\eistaadrawing@xcolor}{xcolor}
-
 
 %%   /--------------\
 %% --+-- packages --+-- %% ----------------------------------------------------
