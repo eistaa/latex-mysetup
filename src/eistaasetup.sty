@@ -23,35 +23,42 @@
 %%   \-----------/
 
 
-\RequirePackage{kvoptions}              % key-value options
+\RequirePackage{kvoptions-patch}        % patch key-val options (allow lists)
+\RequirePackage{xkeyval}                % key-value options
 
-\SetupKeyvalOptions{%
-    family=eistaasetup,%
-    prefix=eistaasetup@%
-}
 
 %% ----- declare options
 
 % load math setup
-\DeclareBoolOption[false]{math}
+\define@boolkey{eistaasetup.sty}[eistaasetup@]{math}[true]{}
 % load theorem setup
-\DeclareBoolOption[false]{theorems}
+\define@boolkey{eistaasetup.sty}[eistaasetup@]{theorems}[true]{}
 % load text setup
-\DeclareBoolOption[false]{text}
+\define@boolkey{eistaasetup.sty}[eistaasetup@]{text}[true]{}
 % load figures setup
-\DeclareBoolOption[false]{figures}
+\define@boolkey{eistaasetup.sty}[eistaasetup@]{figures}[true]{}
 
 % enumitem options
-\DeclareStringOption[{inline}]{enumitem}
+\define@cmdkey{eistaasetup.sty}[eistaasetup@]{enumitem}[]{}
 
 % fallback
-\DeclareDefaultOption{%
-    \@unknownoptionerror
+\DeclareOptionX*{%
+    \ClassWarning{eistaasetup}{Unknown option '\CurrentOption'}
+}
+
+%% ----- set defaults
+
+\setkeys{eistaasetup.sty}{%
+    math=false,%
+    theorems=false,%
+    text=false,%
+    figures=false,%
+    enumitem={inline}%
 }
 
 %% ----- process given options
 
-\ProcessKeyvalOptions*
+\ProcessOptionsX*
 
 
 %%   /--------------\
