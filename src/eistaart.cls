@@ -23,52 +23,61 @@
 %%   \-----------/
 
 
-\RequirePackage{kvoptions}              % key-value options
+%% ----- load key-val stuff
 
-\SetupKeyvalOptions{%
-    family=eistaart,%
-    prefix=eistaart@%
-}
+\RequirePackage{kvoptions-patch}        % patch key-val options (allow lists)
+\RequirePackage{xkeyval}                % key-value options
 
 %% ----- declare options
 
 % load my standard setup
-\DeclareStringOption{eistaasetup}[{%
+\define@cmdkey{eistaart.cls}[eistaart@]{eistaasetup}[{%
         math,theorems,text,figures,%
         enumitem={inline}%
-    }]
+    }]{}
 % load my code setup
-\DeclareStringOption{eistaacode}[{%
+\define@cmdkey{eistaart.cls}[eistaart@]{eistaacode}[{%
         minted,xmargins=-2cm%
-    }]
+    }]{}
 % load my drawing setup
-\DeclareStringOption{eistaadrawing}[%
+\define@cmdkey{eistaart.cls}[eistaart@]{eistaadrawing}[{%
         tikz%
-    ]
+    }]{}
 
 % whether to use normal fonts (default is to use special setup)
-\DeclareBoolOption[false]{normalfonts}
+\define@boolkey{eistaart.cls}[eistaart@]{normalfonts}[true]{}
 
 % language
-\DeclareStringOption[english]{language}
+\define@cmdkey{eistaart.cls}[eistaart@]{language}{}
 
 % xcolor options
-\DeclareStringOption[{usenames,dvipsnames,svgnames,table}]{xcolor}
+\define@cmdkey{eistaart.cls}[eistaart@]{xcolor}{}
 
 % fallback
-\DeclareDefaultOption{%
-    \@unknownoptionerror
+\DeclareOptionX*{%
+    \ClassWarning{eistaart}{Unknown option '\CurrentOption'}
+}
+
+%% ----- set defaults
+
+\setkeys{eistaart.cls}{%
+    eistaasetup={},%
+    eistaacode={},%
+    eistaadrawing={},%
+    normalfonts=false,%
+    language=english,%
+    xcolor={usenames,dvipsnames,svgnames,table}%
 }
 
 %% ----- process given options
 
-\ProcessKeyvalOptions*
+\ProcessOptionsX
 
 %% ----- package & class options
 
 %% setup
 
-\PassOptionsToClass{11pt}{article}
+\PassOptionsToClass{11pt,\eistaart@language}{article}
 \PassOptionsToPackage{a4paper,twoside,hmarginratio=1:1,margin=1.5in,headheight=15.0pt}%
                      {geometry}
 \PassOptionsToPackage{\eistaart@language}{babel}
@@ -111,7 +120,7 @@
 \RequirePackage{fancyhdr}               % to create custom header/footers
 \RequirePackage{geometry}               % to mess with page geometry
 \RequirePackage{titlesec}               % to style sections
-
+\RequirePackage{chngcntr}               % control counters
 
 % my standard setup
 \ifx\eistaart@eistaasetup\@empty \else
@@ -167,9 +176,9 @@
 %% ----- numbering
 
 % number within section
-\@ifpackagewith{eistaasetup}{math}{ \numberwithin{equation}{section} }{ }
-\@ifpackagewith{eistaasetup}{figures}{ \numberwithin{figure}{section} }{ }
-\numberwithin{table} {section}
+\@ifpackagewith{eistaasetup}{math}{    \counterwithin{equation}{section} }{ }
+\@ifpackagewith{eistaasetup}{figures}{ \counterwithin{figure}{section}   }{ }
+\counterwithin{table}{section}
 
 %% ----- list style
 
@@ -190,7 +199,7 @@
 
 %% header
 \fancyhead[LE,RO]{\thepage}
-\fancyhead[CE]   {\textsc{\@@author}}
+\fancyhead[CE]   {\textsc{\authors}}
 \fancyhead[CO]   {\textsc{\@shorttitle}}
 %% footer
 % \fancyfoot[...]{...}
@@ -199,7 +208,7 @@
 \fancypagestyle{plain}{%
     \fancyhf{} % clear
     % only date on first page
-    \fancyfoot[L]{\ifthenelse{\value{page}=1}{\textit{Date:}\@date}{}}
+    \fancyfoot[L]{\ifthenelse{\value{page}=1}{\textit{Date:} \@date}{}}
     % pagenumber on every page
     \fancyfoot[C]{\thepage}
     % no header line but this footer line
@@ -218,7 +227,7 @@
         \rule{1\textwidth}{0.8pt} \\
         \vskip 1em
         \large\sc\authors
-        \vskip 5em
+        \vskip 2em
     \end{center}
 }
 
