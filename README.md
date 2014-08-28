@@ -49,31 +49,34 @@ Required Packages
 
 This is a table of directly required packages:
 
-| Package         | `eistaart`      | `eistaasetup`   | `eistaacode`    | `eistaadrawing` |
-|:--------------- |:---------------:|:---------------:|:---------------:|:---------------:|
-| `algorithm2e`   |                 | YES             |                 |                 |
-| `amsfonts`      |                 | YES             |                 |                 |
-| `amsmath`       |                 | YES             |                 |                 |
-| `amssymb`       |                 | YES             |                 |                 |
-| `amsthm`        |                 | YES             |                 |                 |
-| `babel`         | YES             |                 |                 |                 |
-| `beramono`      | YES             |                 | YES             |                 |
-| `enumitem`      | YES             | YES             |                 |                 |
-| `eulervm`       | YES             |                 |                 |                 |
-| `fancyhdr`      | YES             |                 |                 |                 |
-| `fontenc`       | YES             |                 | YES             |                 |
-| `geometry`      | YES             |                 |                 |                 |
-| `graphicx`      |                 | YES             |                 |                 |
-| `inputenc`      | YES             |                 |                 |                 |
-| `listings`      |                 |                 | YES             |                 |
-| `mathpazo`      | YES             |                 |                 |                 |
-| `mathtools`     |                 | YES             |                 |                 |
-| `minted`        |                 |                 | YES             |                 |
-| `subcaption`    |                 | YES             |                 |                 |
-| `thmtools`      |                 | YES             |                 |                 |
-| `tikz`          |                 |                 |                 | YES             |
-| `titlesec`      | YES             |                 |                 |                 |
-| `xcolor`        |                 |                 | YES             | YES             |
+| Package           | `eistaart`      | `eistaasetup`   | `eistaacode`    | `eistaadrawing` |
+|:----------------- |:---------------:|:---------------:|:---------------:|:---------------:|
+| `algorithm2e`     |                 | YES             |                 |                 |
+| `amsfonts`        |                 | YES             |                 |                 |
+| `amsmath`         |                 | YES             |                 |                 |
+| `amssymb`         |                 | YES             |                 |                 |
+| `amsthm`          |                 | YES             |                 |                 |
+| `babel`           | YES             |                 |                 |                 |
+| `beramono`        | YES             |                 | YES             |                 |
+| `chngcntr`        | YES             |                 |                 |                 |
+| `enumitem`        | YES             | YES             |                 |                 |
+| `eulervm`         | YES             |                 |                 |                 |
+| `fancyhdr`        | YES             |                 |                 |                 |
+| `fontenc`         | YES             |                 | YES             |                 |
+| `geometry`        | YES             |                 |                 |                 |
+| `graphicx`        |                 | YES             |                 |                 |
+| `inputenc`        | YES             |                 |                 |                 |
+| `kvoptions-patch` | YES             | YES             | YES             | YES             |
+| `listings`        |                 |                 | YES             |                 |
+| `mathpazo`        | YES             |                 |                 |                 |
+| `mathtools`       |                 | YES             |                 |                 |
+| `minted`          |                 |                 | YES             |                 |
+| `subcaption`      |                 | YES             |                 |                 |
+| `thmtools`        |                 | YES             |                 |                 |
+| `tikz`            |                 |                 |                 | YES             |
+| `titlesec`        | YES             |                 |                 |                 |
+| `xcolor`          |                 |                 | YES             | YES             |
+| `xkeyval`         | YES             | YES             | YES             | YES             |
 
 Usage
 -----

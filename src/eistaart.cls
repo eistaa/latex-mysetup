@@ -15,7 +15,7 @@
 %% This work consists of the files eistaart.cls, eistaasetup.sty,
 %% eistaacode.sty, eistaadrawing.sty and mathletters.sty.
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{eistaart}[2014/08/24 v1.0 My personal article class]
+\ProvidesClass{eistaart}[2014/08/28 v1.1 My personal article class]
 
 
 %%   /-----------\
