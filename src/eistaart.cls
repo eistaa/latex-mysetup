@@ -141,9 +141,9 @@
 }
 
 
-%%   /--------------\
-%% --+-- commands --+-- %% ----------------------------------------------------
-%%   \--------------/
+%%   /---------------\
+%% --+-- titlepage --+-- %% ---------------------------------------------------
+%%   \---------------/
 
 
 %% title command (from amsart class, http://ctan.org/pkg/amsart)
@@ -155,17 +155,47 @@
 
 %% author command (based on amsart class, http://ctan.org/pkg/amsart)
 %% - allows multiple authors if called multiple times
-\renewcommand*{\author}[1]{%
-    \ifx\authors\@empty
-        \gdef\authors{#1}%
+%% - defines \@shortauthors and \@authors commands
+\renewcommand*{\author}[2][]{%
+    \ifx\@empty\@authors
+        \gdef\@author{#2}%
+        \gdef\@authors{#2}%
     \else
-        \g@addto@macro\authors{\\#1}%
-    \fi}
-\let\authors\@empty
+        \g@addto@macro\@authors{\and#2}%
+    \fi
+    \ifx{#1}{\@empty} \else
+        \ifx\@shortauthors\@empty
+            \gdef\@shortauthors{#1}%
+        \else
+            \g@addto@macro\@shortauthors{, #1}%
+        \fi
+    \fi%
+}
+\edef\author{\noexpand\@dblarg%
+    \expandafter\noexpand\csname\string\author\endcsname}
+\let\@authors\@empty \let\@shortauthors\@empty
+
 
 %% wrapper around date
-\renewcommand*{\date}[1]{\gdef\@date{#1}}
-\let\@date\@empty
+\renewcommand*{\date}[1]{\gdef\@date{#1} \let\@@date\@date}
+\let\@date\today \let\@@date\@date
+
+%% ----- titlepage
+
+\renewcommand*{\@maketitle}{
+    \newpage \null \vskip 2em%
+    \begin{center}
+        \rule{1\textwidth}{0.8pt} \par \vskip 1em%
+        {\LARGE\sc\@title}        \par \vskip 1em%
+        \rule{1\textwidth}{0.8pt} \par \vskip 1em%
+         {\large\sc
+            \lineskip .5em%
+            \begin{tabular}[t]{c}%
+                \@authors
+            \end{tabular} \par}
+        \vskip 2em%
+    \end{center}
+}
 
 
 %%   /-------------\
@@ -194,12 +224,12 @@
 %% setup
 \pagestyle{fancy}
 \fancyhf{} % clear header & footer
-\renewcommand{\headrulewidth}{2pt} % 2pt thick line after header
+\renewcommand{\headrulewidth}{0.5pt} % 2pt thick line after header
 \renewcommand{\footrulewidth}{0pt} % no line before footer
 
 %% header
 \fancyhead[LE,RO]{\thepage}
-\fancyhead[CE]   {\textsc{\authors}}
+\fancyhead[CE]   {\textsc{\@shortauthors}}
 \fancyhead[CO]   {\textsc{\@shorttitle}}
 %% footer
 % \fancyfoot[...]{...}
@@ -208,7 +238,7 @@
 \fancypagestyle{plain}{%
     \fancyhf{} % clear
     % only date on first page
-    \fancyfoot[L]{\ifthenelse{\value{page}=1}{\textit{Date:} \@date}{}}
+    \fancyfoot[L]{\ifthenelse{\value{page}=1}{\textit{Date:} \@@date}{}}
     % pagenumber on every page
     \fancyfoot[C]{\thepage}
     % no header line but this footer line
@@ -216,20 +246,6 @@
     \renewcommand{\footrulewidth}{0.5pt}
 }
 
-
-%% ----- titlepage
-
-\renewcommand{\maketitle}{
-    \thispagestyle{plain}
-    \begin{center}
-        \rule{1\textwidth}{0.8pt} \\
-        \Large\sc\@title          \\
-        \rule{1\textwidth}{0.8pt} \\
-        \vskip 1em
-        \large\sc\authors
-        \vskip 2em
-    \end{center}
-}
 
 %% ----- sections
 
