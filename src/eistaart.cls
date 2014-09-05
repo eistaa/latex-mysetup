@@ -106,7 +106,7 @@
     % use special fonts
     \RequirePackage[sc]{mathpazo}       % use adobe palatino familly of fonts with true small caps
     \linespread{1.05}                   % palatino needs more leading (space between lines)
-    \RequirePackage[euler-hat-accent]
+    \RequirePackage[euler-hat-accent]%
                    {eulervm}            % use ams euler font for math
     \RequirePackage[scaled]{beramono}   % use beramono as monospace font. supports bold and italic
 \fi

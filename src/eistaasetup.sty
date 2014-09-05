@@ -171,6 +171,13 @@
     \newcommand{\HP} {\mathcal{HP}}% halting problem
     \newcommand{\DHP}{\mathcal{DHP}}% diagonal halting problem
 
+    % shorthands to math text styles
+    \@ifundefined\mathbold{%
+        \newcommand{\mb}{\mathbf}
+    }{%
+        \newcommand{\mb}{\mathbold}
+    }
+
     % math operators
     \DeclareMathOperator{\seg}{seg}
     \DeclareMathOperator{\ord}{ord}
