@@ -172,11 +172,21 @@
     \newcommand{\DHP}{\mathcal{DHP}}% diagonal halting problem
 
     % shorthands to math text styles
+    \newcommand{\mbb}{\mathbb}
     \@ifundefined{mathbold}{%
-        \newcommand{\mb}{\mathbf}
+        \newcommand{\mbf}{\mathbf}
     }{%
-        \newcommand{\mb}{\mathbold}
+        \newcommand{\mbf}{\mathbold}
     }
+    \newcommand{\mcc}{\mathcal}
+    \newcommand{\mfk}{\mathfrak}
+    \newcommand{\mii}{\mathit}
+    \newcommand{\mno}{\mathnormal}
+    \newcommand{\mrm}{\mathrm}
+    \newcommand{\msf}{\mathsf}
+
+    % integral d
+    \newcommand{\dd}[1]{\,\mathrm{d}#1}
 
     % math operators
     \DeclareMathOperator{\seg}{seg}
