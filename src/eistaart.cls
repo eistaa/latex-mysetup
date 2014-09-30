@@ -17,7 +17,7 @@
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{eistaart}[2014/08/28 v1.1 My personal article class]
 
-%% --+-- setup --+-- %% {{{ ---------------------------------------------------
+%% --+-- setup --+-- %% {{{* --------------------------------------------------
 %%   \-----------/
 
 
@@ -51,6 +51,9 @@
 % xcolor options
 \define@cmdkey{eistaart.cls}[eistaart@]{xcolor}{}
 
+% whether to load packages to control references
+\define@boolkey{eistaart.cls}[eistaart@]{referencing}[true]{}
+
 % fallback
 \DeclareOptionX*{%
     \ClassWarning{eistaart}{Unknown option '\CurrentOption'}
@@ -64,7 +67,8 @@
     eistaadrawing={},%
     normalfonts=false,%
     language=english,%
-    xcolor={usenames,dvipsnames,svgnames,table}%
+    xcolor={usenames,dvipsnames,svgnames,table},%
+    referencing=false%
 }
 
 %% ----- process given options
@@ -89,9 +93,9 @@
 
 \PassOptionsToPackage{\eistaart@eistaadrawing}{eistaadrawing}
 \PassOptionsToPackage{xcolor={\eistaart@xcolor}}{eistaadrawing}
-%% }}}
+%% *}}}
 
-%% --+-- base class & packages --+-- %% {{{ -----------------------------------
+%% --+-- base class & packages --+-- %% {{{* ----------------------------------
 %%   \---------------------------/
 
 
@@ -136,9 +140,16 @@
 \@ifpackageloaded{enumitem}{ }{
     \RequirePackage{enumitem}           % to style lists
 }
-%% }}}
 
-%% --+-- titlepage --+-- %% {{{ -----------------------------------------------
+% load referencing packages -- !!! NB: Should be last !!!
+\ifeistaart@referencing
+    \RequirePackage{hyperref}
+    \RequirePackage{cleveref}
+    \RequirePackage{autonum}
+\fi
+%% *}}}
+
+%% --+-- titlepage --+-- %% {{{* ----------------------------------------------
 %%   \---------------/
 
 
@@ -192,9 +203,9 @@
         \vskip 2em%
     \end{center}
 }
-%% }}}
+%% *}}}
 
-%% --+-- styling --+-- %% {{{ -------------------------------------------------
+%% --+-- styling --+-- %% {{{* ------------------------------------------------
 %%   \-------------/
 
 
@@ -283,7 +294,7 @@
     {\thesubparagraph}% label
     {1em}% separator between label & title body
     {\@periodafter}% title macro
-%% }}}
+%% *}}}
 
 \endinput
 
