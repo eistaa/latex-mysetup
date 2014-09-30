@@ -9,7 +9,7 @@
 %% 2005/12/01 or later.
 %%
 %% This work has the LPPL maintenance status `maintained'.
-%% 
+%%
 %% The Current Maintainer of this work is Eivind Storm Aarnæs.
 %%
 %% This work consists of the files eistaart.cls, eistaasetup.sty,
@@ -17,9 +17,7 @@
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{eistaart}[2014/08/28 v1.1 My personal article class]
 
-
-%%   /-----------\
-%% --+-- setup --+-- %% -------------------------------------------------------
+%% --+-- setup --+-- %% {{{ ---------------------------------------------------
 %%   \-----------/
 
 
@@ -91,10 +89,9 @@
 
 \PassOptionsToPackage{\eistaart@eistaadrawing}{eistaadrawing}
 \PassOptionsToPackage{xcolor={\eistaart@xcolor}}{eistaadrawing}
+%% }}}
 
-
-%%   /---------------------------\
-%% --+-- base class & packages --+-- %% ---------------------------------------
+%% --+-- base class & packages --+-- %% {{{ -----------------------------------
 %%   \---------------------------/
 
 
@@ -139,10 +136,9 @@
 \@ifpackageloaded{enumitem}{ }{
     \RequirePackage{enumitem}           % to style lists
 }
+%% }}}
 
-
-%%   /---------------\
-%% --+-- titlepage --+-- %% ---------------------------------------------------
+%% --+-- titlepage --+-- %% {{{ -----------------------------------------------
 %%   \---------------/
 
 
@@ -196,10 +192,9 @@
         \vskip 2em%
     \end{center}
 }
+%% }}}
 
-
-%%   /-------------\
-%% --+-- styling --+-- %% -----------------------------------------------------
+%% --+-- styling --+-- %% {{{ -------------------------------------------------
 %%   \-------------/
 
 
@@ -209,6 +204,12 @@
 \@ifpackagewith{eistaasetup}{math}{    \counterwithin{equation}{section} }{ }
 \@ifpackagewith{eistaasetup}{figures}{ \counterwithin{figure}{section}   }{ }
 \counterwithin{table}{section}
+
+%% ----- equation label
+
+\let\old@tagform@\tagform@
+\def\tagform@#1{\rlap{\hspace{0.5em}\old@tagform@{#1}}}
+\renewcommand{\eqref}[1]{\textup{\old@tagform@{\ref{#1}}}}
 
 %% ----- list style
 
@@ -261,14 +262,14 @@
 % subsection
 \titleformat{\subsection}[runin]% command & shape
     {\normalfont\normalsize\bf}% format
-    {\thesubsection.}% label
-    {1em}% separator between label & title body
+    {\llap{\thesubsection.\hspace{0.5em}}}% label
+    {0.5em}% separator between label & title body
     {\@periodafter}% title macro
 % subsubsection
 \titleformat{\subsubsection}[runin]% command & shape
     {\normalfont\normalsize\bf}% format
-    {\thesubsubsection.}% label
-    {1em}% separator between label & title body
+    {\llap{\thesubsubsection.\hspace{0.5em}}}% label
+    {0.5em}% separator between label & title body
     {\@periodafter}% title macro
 % paragraph
 \titleformat{\paragraph}[runin]% command & shape
@@ -282,6 +283,7 @@
     {\thesubparagraph}% label
     {1em}% separator between label & title body
     {\@periodafter}% title macro
+%% }}}
 
 \endinput
 
