@@ -141,9 +141,8 @@
     \RequirePackage{enumitem}           % to style lists
 }
 
-% load referencing packages -- !!! NB: Should be last !!!
+% load referencing packages
 \ifeistaart@referencing
-    \RequirePackage{hyperref}
     \RequirePackage{cleveref}
     \RequirePackage{autonum}
 \fi
@@ -209,15 +208,14 @@
 %%   \-------------/
 
 
-%% ----- numbering
+%% ----- labels & numbering
 
 % number within section
 \@ifpackagewith{eistaasetup}{math}{    \counterwithin{equation}{section} }{ }
 \@ifpackagewith{eistaasetup}{figures}{ \counterwithin{figure}{section}   }{ }
 \counterwithin{table}{section}
 
-%% ----- equation label
-
+% equation label
 \let\old@tagform@\tagform@
 \def\tagform@#1{\rlap{\hspace{0.5em}\old@tagform@{#1}}}
 \renewcommand{\eqref}[1]{\textup{\old@tagform@{\ref{#1}}}}
