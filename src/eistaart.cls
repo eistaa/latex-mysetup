@@ -15,7 +15,7 @@
 %% This work consists of the files eistaart.cls, eistaasetup.sty,
 %% eistaacode.sty, eistaadrawing.sty and mathletters.sty.
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{eistaart}[2014/08/28 v1.1 My personal article class]
+\ProvidesClass{eistaart}[2014/10/01 v1.2 My personal article class]
 
 %% --+-- setup --+-- %% {{{* --------------------------------------------------
 %%   \-----------/
@@ -216,9 +216,11 @@
 \counterwithin{table}{section}
 
 % equation label
-\let\old@tagform@\tagform@
-\def\tagform@#1{\rlap{\hspace{0.5em}\old@tagform@{#1}}}
-\renewcommand{\eqref}[1]{\textup{\old@tagform@{\ref{#1}}}}
+\@ifpackagewith{eistaasetup}{math}{
+    \let\old@tagform@\tagform@
+    \def\tagform@#1{\hspace{0.1pt}\rlap{\hspace{0.5em}\old@tagform@{#1}}}
+    \renewcommand{\eqref}[1]{\textup{\old@tagform@{\ref{#1}}}}
+}{ }
 
 %% ----- list style
 
