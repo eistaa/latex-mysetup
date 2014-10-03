@@ -35,7 +35,7 @@
     }]{}
 % load my code setup
 \define@cmdkey{eistaart.cls}[eistaart@]{eistaacode}[{%
-        minted,xmargins=-2cm%
+        minted,xmargins=-1cm%
     }]{}
 % load my drawing setup
 \define@cmdkey{eistaart.cls}[eistaart@]{eistaadrawing}[{%
@@ -143,7 +143,7 @@
 
 % load referencing packages
 \ifeistaart@referencing
-    \RequirePackage{cleveref}
+    \RequirePackage[capitalize]{cleveref}
     \RequirePackage{autonum}
 \fi
 %% *}}}

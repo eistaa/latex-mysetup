@@ -15,11 +15,10 @@
 %% This work consists of the files eistaart.cls, eistaasetup.sty,
 %% eistaacode.sty, eistaadrawing.sty and mathletters.sty.
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{eistaacode}[2014/08/28 v1.1 My personal code setup]
+\ProvidesPackage{eistaacode}[2014/10/03 v1.2 My personal code setup]
 
 
-%%   /-----------\
-%% --+-- setup --+-- %% -------------------------------------------------------
+%% --+-- setup --+-- %% {{{* --------------------------------------------------
 %%   \-----------/
 
 %% ----- needed in options
@@ -44,7 +43,7 @@
 \define@boolkey{eistaacode.sty}[eistaacode@]{nofontenc}[true]{}
 
 % margin extension
-\define@key{eistaacode.sty}{xmargins}[-2cm]{%
+\define@key{eistaacode.sty}{xmargins}[-1cm]{%
     \setlength{\codexmargins}{#1}
 }
 
@@ -66,10 +65,9 @@
 %% ----- process given options
 
 \ProcessOptionsX*
+%% *}}}
 
-
-%%   /--------------\
-%% --+-- packages --+-- %% ----------------------------------------------------
+%% --+-- packages --+-- %% {{{* -----------------------------------------------
 %%   \--------------/
 
 
@@ -81,10 +79,9 @@
 \fi
 
 \RequirePackage{xcolor}                 % colors!
+%% *}}}
 
-
-%%   /--------------------\
-%% --+-- listings setup --+-- %% ----------------------------------------------
+%% --+-- listings setup --+-- %% {{{* -----------------------------------------
 %%   \--------------------/
 
 
@@ -169,19 +166,21 @@
             {\ }{{{ }}}{1}% handle space correct
     }
 \fi
+%% *}}}
 
-
-%%   /------------------\
-%% --+-- minted setup --+-- %% ------------------------------------------------
+%% --+-- minted setup --+-- %% {{{* -------------------------------------------
 %%   \------------------/
 
 
 \ifeistaacode@minted
-    \RequirePackage{minted}             % minted
 
-    \usemintedstyle{trac}
+    \RequirePackage{minted}  % minted
+    \RequirePackage[most,minted]{tcolorbox}
+    \RequirePackage{chngpage}
 
     %% ----- style
+
+    %\usemintedstyle{trac}
 
     % number style
     \renewcommand{\theFancyVerbLine}%
@@ -191,27 +190,67 @@
 
     %% ----- create generators for mint, minted and inputminted commands for specific languages
 
-    \edef\mintedoptions{%
-        linenos,                % line numbers
-        numberblanklines=true,  % number blank lines
-        numbersep=10pt,         % distance between numbers and start of line
-        stepnumber=2,           % interval at which line numbers appear
-        %
-        fontfamily=tt,             % font family
-        fontsize=\noexpand\small,  % font size
-        %
-        frame=leftline,   % frame type
-        framerule=0.4pt,  % width of frame
-        framesep=2mm,     % distance between frame and code
-        obeytabs=false,   % whether to obey tabs instead of converting to spaces
-        tabsize=4,        % number of spaces a tab is equivalent to
-        %
-        xleftmargin=\codexmargins,  % modify left margin
-        xrightmargin=\codexmargins  % modify right margin
+    \define@cmdkey{eistaalisting}[eistaalisting@]{title}{} 
+    \define@cmdkey{eistaalisting}[eistaalisting@]{label}{} 
+    \setkeys{eistaalisting}{title={},label={}}%
+    \newcommand{\eistaainputlisting}[3][]{%
+        \def\eistaa@tmp@lang{#2}
+        \def\eistaa@tmp@file{#3}
+        \begingroup%
+            \setkeys{eistaalisting}{#1}%
+            \internal@eistaainputlisting[]%
+                {\eistaalisting@title}{\eistaalisting@label}% title & label
+                {}% minted options
+                {\eistaa@tmp@lang}{\eistaa@tmp@file}% source code language & filename
+        \endgroup}
+    \newtcbinputlisting[%
+        auto counter,%
+        number within=section,%
+        list inside=eistaapyg,%
+    ]{\internal@eistaainputlisting}[6][]{%
+        listing engine=minted,% use minted for highlighting
+        listing file={#6},% file to display
+        listing only,% only display the rendered listing
+        %%
+        minted language={#5},% source code language
+        minted style=trac,
+        minted options={%
+            linenos,%                % line numbers
+            numberblanklines=true,%  % number blank lines
+            numbersep=10pt,%         % distance between numbers and start of line
+            stepnumber=2,%           % interval at which line numbers appear
+            %
+            fontfamily=tt,%   % font family
+            fontsize=\footnotesize,%  % font size
+            %
+            obeytabs=false,%  % whether to obey tabs instead of converting to spaces
+            tabsize=4,%       % number of spaces a tab is equivalent to
+            #4% extra minted options
+        },%
+        %%
+        before=\begin{adjustwidth}{\codexmargins}{\codexmargins},% before colorbox
+        after=\end{adjustwidth},% after colorbox
+        width=(\textwidth-2\codexmargins),% extra width of box
+        left=23pt,% extra margin in the box
+        %%
+        overlay={\begin{tcbclipinterior}% overlay to make number column darker
+                \fill[white!60!black!90!] (frame.south west) rectangle%
+                    ([xshift=8mm]frame.north west);%
+            \end{tcbclipinterior}},%
+        colback=white!95!black!80!,% background color
+        colframe=white!30!black,% frame color
+        %%
+        fonttitle=\textsc,% title text style
+        title={Listing \thetcbcounter: #2},% title text
+        label={#3},% listing label
+        %%
+        label type=listing,% cleveref label type
+        enhanced,% allow TikZ stuff
+        breakable,% splits over multiple pages
+        #1% extra options
     }
-    \newcommand{\defaultinputminted}[2]%
-        { \expandafter\inputminted\expandafter[\mintedoptions]{#1}{#2} }
 \fi
+%% *}}}
 
 \endinput
 
