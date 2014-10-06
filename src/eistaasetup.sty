@@ -15,11 +15,9 @@
 %% This work consists of the files eistaart.cls, eistaasetup.sty,
 %% eistaacode.sty, eistaadrawing.sty and mathletters.sty.
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{eistaasetup}[2014/08/28 v1.1 My personal math, text, theorem and figure setup]
+\ProvidesPackage{eistaasetup}[2014/06/10 v1.2 My personal math, text, theorem and figure setup]
 
-
-%%   /-----------\
-%% --+-- setup --+-- %% -------------------------------------------------------
+%% --+-- setup --+-- %% {{{* --------------------------------------------------
 %%   \-----------/
 
 
@@ -59,10 +57,9 @@
 %% ----- process given options
 
 \ProcessOptionsX*
+%% *}}}
 
-
-%%   /--------------\
-%% --+-- packages --+-- %% ----------------------------------------------------
+%% --+-- packages --+-- %% {{{* -----------------------------------------------
 %%   \--------------/
 
 
@@ -94,10 +91,9 @@
     \RequirePackage{graphicx}           % insert images
     \RequirePackage{subcaption}         % subfigures and subtables
 \fi
+%% *}}}
 
-
-%%   /-------------------\
-%% --+-- theorem setup --+-- %% -----------------------------------------------
+%% --+-- theorem setup --+-- %% {{{* ------------------------------------------
 %%   \-------------------/
 
 
@@ -132,10 +128,9 @@
     \newtheorem{proposition}[theorem]{Proposition} % label same as theorem
     \newtheorem{example}    {Example}[section]     % label within section
 \fi
+%% *}}}
 
-
-%%   /---------------\
-%% --+-- text setup -+--- %% --------------------------------------------------
+%% --+-- text setup -+--- %% {{{* ---------------------------------------------
 %%   \---------------/
 
 
@@ -159,17 +154,15 @@
             {\end{enumerate*}}% after
     }{ }
 \fi
+%% *}}}
 
-
-%%   /----------------\
-%% --+-- math setup --+-- %% --------------------------------------------------
+%% --+-- math setup --+-- %% {{{* ---------------------------------------------
 %%   \----------------/
 
 
 \ifeistaasetup@math
-    % halting problem
-    \newcommand{\HP} {\mathcal{HP}}% halting problem
-    \newcommand{\DHP}{\mathcal{DHP}}% diagonal halting problem
+
+    %% ----- convenience
 
     % shorthands to math text styles
     \newcommand{\mbb}{\mathbb}
@@ -188,9 +181,28 @@
     % integral d
     \newcommand{\dd}[1]{\,\mathrm{d}#1}
 
-    % math operators
+    % pairs in angles
+    \providecommand\pair{} \providecommand\LRpair{}
+    \renewcommand{\pair}  [2]{\langle #1, #2\rangle}
+    \renewcommand{\LRpair}[2]{\left\langle #1, #2\right\rangle}
+
+    %% ----- notation
+
+    % halting problem
+    \providecommand\HP{} \providecommand\DHP{}
+    \renewcommand{\HP} {\mathcal{HP}}% halting problem
+    \renewcommand{\DHP}{\mathcal{DHP}}% diagonal halting problem
+
+    % vector and matrix style
+    \providecommand\Vec{} \providecommand\Mat{}
+    \renewcommand{\Vec}[1]{\mbf{#1}}
+    \renewcommand{\Mat}[1]{\mbf{#1}}
+
+    % operators
     \DeclareMathOperator{\seg}{seg}
     \DeclareMathOperator{\ord}{ord}
+
+    %% ----- new/modified symbols
 
     % quantifiers
     \newcommand{\existsall}{\ensuremath% EXISTS over FOR ALL
@@ -207,11 +219,8 @@
     % !!! NOTE: requires amssymb package !!!
     \let\eistaasetup@oldrestr\restriction% store old restriction
     \renewcommand{\restriction}{\!\!\eistaasetup@oldrestr}% new restriction
-
-    % pairs in angles
-    \newcommand{\pair}  [2]{\langle #1, #2\rangle}
-    \newcommand{\LRpair}[2]{\left\langle #1, #2\right\rangle}
 \fi
+%% *}}}
 
 \endinput
 
