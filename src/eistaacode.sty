@@ -9,7 +9,7 @@
 %% 2005/12/01 or later.
 %%
 %% This work has the LPPL maintenance status `maintained'.
-%% 
+%%
 %% The Current Maintainer of this work is Eivind Storm Aarnæs.
 %%
 %% This work consists of the files eistaart.cls, eistaasetup.sty,
@@ -29,6 +29,7 @@
 
 \RequirePackage{kvoptions-patch}        % patch key-val options (allow lists)
 \RequirePackage{xkeyval}                % key-value options
+\RequirePackage{xifthen}                % logic
 
 %% ----- declare options
 
@@ -176,7 +177,7 @@
 
     \RequirePackage{minted}  % minted
     \RequirePackage[most,minted]{tcolorbox}
-    \RequirePackage{chngpage}
+    \RequirePackage[strict]{changepage}  % adjust margins
 
     %% ----- style
 
@@ -190,8 +191,8 @@
 
     %% ----- create generators for mint, minted and inputminted commands for specific languages
 
-    \define@cmdkey{eistaalisting}[eistaalisting@]{title}{} 
-    \define@cmdkey{eistaalisting}[eistaalisting@]{label}{} 
+    \define@cmdkey{eistaalisting}[eistaalisting@]{title}{}
+    \define@cmdkey{eistaalisting}[eistaalisting@]{label}{}
     \setkeys{eistaalisting}{title={},label={}}%
     \newcommand{\eistaamintedinput}[3][]{%
         \def\eistaa@tmp@lang{#2}
@@ -208,6 +209,13 @@
         number within=section,%
         list inside=eistaapyg,%
     ]{\internal@eistaainputlisting}[6][]{%
+        %% ARGUMENTS:
+        %  - #1 - tcolorbox options
+        %  - #2 - title
+        %  - #3 - label
+        %  - #4 - minted options
+        %  - #5 - code language
+        %  - #6 - filename
         listing engine=minted,% use minted for highlighting
         listing file={#6},% file to display
         listing only,% only display the rendered listing
@@ -239,9 +247,11 @@
             \end{tcbclipinterior}},%
         colback=white!95!black!80!,% background color
         colframe=white!30!black,% frame color
+        arc=1pt,% corner arc radius
         %%
         fonttitle=\textsc,% title text style
-        title={Listing \thetcbcounter: #2},% title text
+        before title={Listing \thetcbcounter:~},% text before title
+        title={#2},% title text
         label={#3},% listing label
         %%
         label type=listing,% cleveref label type
