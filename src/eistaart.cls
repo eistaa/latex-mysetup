@@ -136,6 +136,9 @@
     \RequirePackage{eistaadrawing}
 \fi
 
+% improve spacing between words and letters
+\RequirePackage{microtype}
+
 % load enumitem if not loaded, since styling is dependant upon it
 \@ifpackageloaded{enumitem}{ }{
     \RequirePackage{enumitem}           % to style lists
@@ -190,17 +193,17 @@
 
 \renewcommand*{\@maketitle}{
     \newpage \null \vskip 2em%
-    \begin{center}
+    \begin{minipage}{0.9\textwidth}\begin{center}
         \rule{1\textwidth}{0.8pt} \par \vskip 1em%
         {\LARGE\sc\@title}        \par \vskip 1em%
-        \rule{1\textwidth}{0.8pt} \par \vskip 1em%
+        \rule{1\textwidth}{1.2pt} \par \vskip 1em%
          {\large\sc
             \lineskip .5em%
             \begin{tabular}[t]{c}%
                 \@authors
             \end{tabular} \par}
         \vskip 2em%
-    \end{center}
+    \end{center}\end{minipage}
 }
 %% *}}}
 
