@@ -54,6 +54,10 @@
 % whether to load packages to control references
 \define@boolkey{eistaart.cls}[eistaart@]{referencing}[true]{}
 
+% add coffee stains on front page
+\define@boolkey{eistaart.cls}[eistaart@]{coffee}[true]{}    % load coffee4
+\define@boolkey{eistaart.cls}[eistaart@]{nostains}[true]{}  % no default stains
+
 % fallback
 \DeclareOptionX*{%
     \ClassWarning{eistaart}{Unknown option '\CurrentOption'}
@@ -68,7 +72,9 @@
     normalfonts=false,%
     language=english,%
     xcolor={usenames,dvipsnames,svgnames,table},%
-    referencing=false%
+    referencing=false,%
+    coffee={false},%
+    nostains={false},%
 }
 
 %% ----- process given options
@@ -122,6 +128,9 @@
 \RequirePackage{geometry}               % to mess with page geometry
 \RequirePackage{titlesec}               % to style sections
 \RequirePackage{chngcntr}               % control counters
+\ifeistaart@coffee
+    \RequirePackage{coffee4}
+\fi
 
 % my standard setup
 \ifx\eistaart@eistaasetup\@empty \else
@@ -197,13 +206,19 @@
         \rule{1\textwidth}{0.8pt} \par \vskip 1em%
         {\LARGE\sc\@title}        \par \vskip 1em%
         \rule{1\textwidth}{1.2pt} \par \vskip 1em%
-         {\large\sc
+        {\large\sc
             \lineskip .5em%
             \begin{tabular}[t]{c}%
                 \@authors
             \end{tabular} \par}
         \vskip 2em%
     \end{center}\end{minipage}
+    \ifeistaart@coffee
+        \ifeistaart@nostains \else
+            \cofeAm{0.2}{1.0}{340}{2.3cm}{10.4cm}
+            \cofeCm{0.5}{0.7}{155}{0.0cm}{12.0cm}
+        \fi
+    \fi
 }
 %% *}}}
 
