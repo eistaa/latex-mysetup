@@ -204,7 +204,9 @@
     \newpage \null \vskip 2em%
     \begin{minipage}{0.9\textwidth}\begin{center}
         \rule{1\textwidth}{0.8pt} \par \vskip 1em%
+        \baselineskip 2.5em%
         {\LARGE\sc\@title}        \par \vskip 1em%
+        \baselineskip 1em%
         \rule{1\textwidth}{1.2pt} \par \vskip 1em%
         {\large\sc
             \lineskip .5em%
@@ -215,7 +217,7 @@
     \end{center}\end{minipage}
     \ifeistaart@coffee
         \ifeistaart@nostains \else
-            \cofeAm{0.2}{1.0}{340}{2.3cm}{10.4cm}
+            \cofeAm{0.2}{1.0}{0}{4.5cm}{10.2cm}
             \cofeCm{0.5}{0.7}{155}{0.0cm}{12.0cm}
         \fi
     \fi
