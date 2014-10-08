@@ -180,15 +180,13 @@
 
     %% ----- style
 
-    %\usemintedstyle{trac}
-
     % number style
     \renewcommand{\theFancyVerbLine}%
         {\sffamily\footnotesize\oldstylenums{\arabic{FancyVerbLine}}}
-    % backgroundcolor
-    \definecolor{eistaacode@mintedbg}{rgb}{0.95,0.95,0.95}
 
-    %% ----- create generators for mint, minted and inputminted commands for specific languages
+    %% ----- minted input command & minted environment using tcolorbox
+
+    %% options {{{*
 
     % counter to use for listings
     \newcounter{eistaacode@mintedlistingcounter}
@@ -232,28 +230,42 @@
         tabsize=4,%       % number of spaces a tab is equivalent to
     }
 
+    % shorthand
+    \let\@ex=\expandafter
+    % keys
     \define@cmdkey{eistaalisting}[eistaalisting@]{title}{}
     \define@cmdkey{eistaalisting}[eistaalisting@]{label}{}
-    \setkeys{eistaalisting}{title={},label={}}%
+    \define@cmdkey{eistaalisting}[eistaalisting@]{firstline}{}
+    \define@cmdkey{eistaalisting}[eistaalisting@]{lastline}{}
+    \setkeys{eistaalisting}{title={},label={},firstline=1,lastline=999999}%
+    %% *}}}
+    %% minted input command {{{*
+
     \newcommand{\eistaamintedinput}[3][]{%
         \def\eistaalisting@lang{#2}
         \def\eistaalisting@file{#3}
         \begingroup%
+            \setkeys{eistaalisting}{title={},label={},firstline=1,lastline=999999}%
             \setkeys{eistaalisting}{#1}%
-            \expandafter\internal@eistaainputlisting\expandafter[\eistaa@defaultmintedoptions]%
-                {}{}% extra minted options & tcolorbox options
-                {\eistaalisting@title}{\eistaalisting@label}% title & label
-                {\eistaalisting@lang}{\eistaalisting@file}% source code language & filename
+            \@ex\@ex\@ex\@ex\@ex\@ex\@ex\internal@eistaamintedinput
+                \@ex\@ex\@ex\@ex\@ex\@ex\@ex
+                    [\@ex\@ex\@ex\eistaa@defaultmintedoptions\@ex\@ex\@ex]% default minted opts
+                        \@ex\@ex\@ex{\@ex\eistaalisting@firstline\@ex}% firstline
+                            \@ex{\eistaalisting@lastline}% lastline
+                            {\eistaalisting@title}% title
+                            {\eistaalisting@label}% label
+                            {\eistaalisting@lang}% source lang
+                            {\eistaalisting@file}% filename
         \endgroup}
     \newtcbinputlisting[%
         use counter={eistaacode@mintedlistingcounter},% counter to use
         number within=section,%
         list inside=eistaapyg,%
-    ]{\internal@eistaainputlisting}[7][]{%
+    ]{\internal@eistaamintedinput}[7][]{%
         %% ARGUMENTS:
         %  - #1 - default minted options
-        %  - #2 - extra minted options
-        %  - #3 - tcolorbox options
+        %  - #2 - first line to input
+        %  - #3 - last line to input
         %  - #4 - title
         %  - #5 - label
         %  - #6 - code language
@@ -264,14 +276,15 @@
         minted language={#6},% source code language
         minted options={%
             #1,% default minted options
-            #2% extra minted options
+            firstline={#2},% first line to input
+            lastline={#3},% first line to input
         },%
         %%
         title={#4},% title text
         label={#5},% listing label
-        %%
-        #3% extra options
     }
+    %% *}}}
+
 \fi
 %% *}}}
 
