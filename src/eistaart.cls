@@ -217,8 +217,8 @@
     \end{center}\end{minipage}
     \ifeistaart@coffee
         \ifeistaart@nostains \else
-            \cofeAm{0.2}{1.0}{0}{4.5cm}{10.2cm}
-            \cofeCm{0.5}{0.7}{155}{0.0cm}{12.0cm}
+            \cofeAm{0.1}{1.0}{0}{4.5cm}{10.2cm}
+            \cofeCm{0.4}{0.7}{155}{0.0cm}{12.0cm}
         \fi
     \fi
 }
