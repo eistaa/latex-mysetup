@@ -9,7 +9,7 @@
 %% 2005/12/01 or later.
 %%
 %% This work has the LPPL maintenance status `maintained'.
-%% 
+%%
 %% The Current Maintainer of this work is Eivind Storm Aarnæs.
 %%
 %% This work consists of the files eistaart.cls, eistaasetup.sty,
@@ -23,6 +23,9 @@
 
 \RequirePackage{kvoptions-patch}        % patch key-val options (allow lists)
 \RequirePackage{xkeyval}                % key-value options
+\@ifpackageloaded{etoolbox}{ }{
+    \RequirePackage{etoolbox}
+}
 
 
 %% ----- declare options
@@ -181,22 +184,29 @@
     % integral d
     \newcommand{\dd}[1]{\,\mathrm{d}#1}
 
-    % pairs in angles
-    \providecommand\pair{} \providecommand\LRpair{}
-    \renewcommand{\pair}  [2]{\langle #1, #2\rangle}
-    \renewcommand{\LRpair}[2]{\left\langle #1, #2\right\rangle}
+    % ----- paired stuff
+
+    % bracket
+    \DeclarePairedDelimiter\bracket{\langle}{\rangle}
+
+    % abs & norm - adds a \cdot if called with empty argument
+    \DeclarePairedDelimiterX\abs[1]{\lvert}{\rvert}{ \ifblank{#1}{\:\cdot\:}{#1} }
+    \DeclarePairedDelimiterX\norm[1]{\lVert}{\rVert}{ \ifblank{#1}{\:\cdot\:}{#1} }
+
+    % rounding
+    \DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+    \DeclarePairedDelimiter\ceil {\lceil} {\rceil}
+    \DeclarePairedDelimiter\round{\lfloor}{\rceil}
 
     %% ----- notation
 
     % halting problem
-    \providecommand\HP{} \providecommand\DHP{}
-    \renewcommand{\HP} {\mathcal{HP}}% halting problem
-    \renewcommand{\DHP}{\mathcal{DHP}}% diagonal halting problem
+    \newcommand{\HP} {\mathcal{HP}}% halting problem
+    \newcommand{\DHP}{\mathcal{DHP}}% diagonal halting problem
 
     % vector and matrix style
-    \providecommand\Vec{} \providecommand\Mat{}
-    \renewcommand{\Vec}[1]{\mbf{#1}}
-    \renewcommand{\Mat}[1]{\mbf{#1}}
+    \providecommand\Vec{} \renewcommand{\Vec}[1]{\mbf{#1}}
+    \providecommand\Mat{} \renewcommand{\Mat}[1]{\mbf{#1}}
 
     % operators
     \DeclareMathOperator{\seg}{seg}
@@ -217,8 +227,14 @@
 
     % renewing the restriction symbol since it has to much left whitespace
     % !!! NOTE: requires amssymb package !!!
-    \let\eistaasetup@oldrestr\restriction% store old restriction
+    \let\eistaasetup@oldrestr=\restriction% store old restriction
     \renewcommand{\restriction}{\!\!\eistaasetup@oldrestr}% new restriction
+
+    % adding space around `\land` an `\lor`
+    \let\eistaasetup@oldland=\land
+    \renewcommand{\land}{\:\eistaasetup@oldland\:}
+    \let\eistaasetup@oldlor=\lor
+    \renewcommand{\lor}{\:\eistaasetup@oldlor\:}
 \fi
 %% *}}}
 

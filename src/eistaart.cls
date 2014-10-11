@@ -71,7 +71,7 @@
     eistaadrawing={},%
     normalfonts=false,%
     language=english,%
-    xcolor={usenames,dvipsnames,svgnames,table},%
+    xcolor={dvipsnames,svgnames,x11names},%
     referencing=false,%
     coffee={false},%
     nostains={false},%
@@ -89,6 +89,8 @@
 \PassOptionsToPackage{a4paper,twoside,hmarginratio=1:1,margin=1.5in,headheight=15.0pt}%
                      {geometry}
 \PassOptionsToPackage{\eistaart@language}{babel}
+
+\PassOptionsToPackage{\eistaart@xcolor}{xcolor}
 
 %% my classes
 
@@ -108,6 +110,9 @@
 %% load base class
 \LoadClass{article}
 
+% fixes to LaTeX2e
+\RequirePackage{fixltx2e}
+
 % fonts
 \ifeistaart@normalfonts \else
     % use special fonts
@@ -122,6 +127,11 @@
 \RequirePackage[utf8]{inputenc}         % input encoding is utf-8
 \RequirePackage[T1]{fontenc}            % encode fonts as T1
 \RequirePackage{babel}                  % language
+
+% colors
+\ifx\eistaart@xolor\@empty \else
+    \RequirePackage{xcolor}
+\fi
 
 % used for styling
 \RequirePackage{fancyhdr}               % to create custom header/footers
