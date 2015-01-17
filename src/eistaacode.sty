@@ -178,6 +178,8 @@
     \RequirePackage[most,minted]{tcolorbox}
     \RequirePackage[strict]{changepage}  % adjust margins
 
+    \tcbuselibrary{skins,breakable}
+
     %% ----- style
 
     % number style
@@ -192,15 +194,16 @@
     \newcounter{eistaacode@mintedlistingcounter}
     % default style for listings
     \tcbset{eistaaminted/.style={
+        breakable=true,% splits over multiple pages
+        %%
         listing engine=minted,% use minted for highlighting
         listing only,% only display the rendered listing
         minted style=trac,
-        %%
-        before=\begin{adjustwidth}{\codexmargins}{\codexmargins},% before colorbox
-        after=\end{adjustwidth},% after colorbox
+        % %%
+        left skip=\codexmargins,%insert horizontal space
         width=(\textwidth-2\codexmargins),% extra width of box
         left=23pt,% extra margin in the box
-        %%
+        % %%
         overlay={\begin{tcbclipinterior}% overlay to make number column darker
                 \fill[white!60!black!90!] (frame.south west) rectangle%
                     ([xshift=8mm]frame.north west);%
@@ -213,8 +216,7 @@
         before title={Listing \thetcbcounter:~},% text before title
         label type=listing,% cleveref label type
         %%
-        enhanced,% allow TikZ stuff
-        breakable,% splits over multiple pages
+        skin=enhanced,% allow TikZ stuff
     }}
     % default minted style for listings
     \edef\eistaa@defaultmintedoptions{%
