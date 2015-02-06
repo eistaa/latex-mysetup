@@ -28,11 +28,11 @@ The makefile is set up to install to the users local `texmf`-directory by defaul
 the makefile you should run:
 
 ```bash
-tlmgr init-userdir              # to setup your local texmf dir
+tlmgr init-usertree             # to setup your local texmf dir
 kpsewhich -var-value=TEXMFHOME  # this should output the path to your local texmf dir
 ```
 
-To install your local `texmf`-directory, do:
+To install to your local `texmf`-directory, do:
 
 ```bash
 make install
