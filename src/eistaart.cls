@@ -223,8 +223,8 @@
             \begin{tabular}[t]{c}%
                 \@authors
             \end{tabular} \par}
-        \vskip 2em%
     \end{center}\end{minipage}
+    \vskip 1em%
     \ifeistaart@coffee
         \ifeistaart@nostains \else
             \cofeAm{0.1}{1.0}{0}{4.5cm}{10.2cm}
