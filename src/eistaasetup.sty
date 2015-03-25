@@ -206,12 +206,14 @@
     \newcommand{\DHP}{\mathcal{DHP}}% diagonal halting problem
 
     % vector and matrix style
-    \providecommand\Vec{} \renewcommand{\Vec}[1]{\mbf{#1}}
-    \providecommand\Mat{} \renewcommand{\Mat}[1]{\mbf{#1}}
+    \let\vecarrow=\vec
+    \providecommand\vec{} \renewcommand{\vec}[1]{\mbf{#1}}
+    \providecommand\mat{} \renewcommand{\mat}[1]{\mbf{#1}}
 
     % operators
-    \DeclareMathOperator{\seg}{seg}
     \DeclareMathOperator{\ord}{ord}
+    \DeclareMathOperator{\seg}{seg}
+    \DeclareMathOperator{\spn}{Span}
 
     %% ----- new/modified symbols
 
