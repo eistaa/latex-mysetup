@@ -12,58 +12,55 @@ TEXMFSUFFIX  = tex/latex
 SRCDIR   = ./src
 OTHERDIR = ./other
 
-CLASSDIR   = $(TEXMF)/$(TEXMFSUFFIX)/base
-CLASSFILES = eistaart.cls
+# CLASSDIR   = $(TEXMF)/$(TEXMFSUFFIX)/base
 
-CODESETUPDIR   = $(TEXMF)/$(TEXMFSUFFIX)/eistaacode
-CODESETUPFILES = eistaacode.sty
+CLSFILES  = eistaadoc.cls
+STYFILES  = eistaasetup.sty mathletters.sty
+STYFILES += eistaacode.sty
+STYFILES += eistaadrawing.sty
+PKGDIR    = $(TEXMF)/$(TEXMFSUFFIX)/eistaa
 
-STDSETUPDIR   = $(TEXMF)/$(TEXMFSUFFIX)/eistaasetup
-STDSETUPFILES = eistaasetup.sty mathletters.sty
+# for bundled packages
 
-DRAWINGSETUPDIR   = $(TEXMF)/$(TEXMFSUFFIX)/eistaadrawing
-DRAWINGSETUPFILES = eistaadrawing.sty
-
-COFFEEDIR   = $(TEXMF)/$(TEXMFSUFFIX)/coffee
 COFFEEFILES = coffee4.sty
+COFFEEDIR   = $(TEXMF)/$(TEXMFSUFFIX)/coffee4
 
 ## ----------------------------------------
 
-CLASSSRC        = $(patsubst %,$(SRCDIR)/%,$(CLASSFILES))
-CODESETUPSRC    = $(patsubst %,$(SRCDIR)/%,$(CODESETUPFILES))
-STDSETUPSRC     = $(patsubst %,$(SRCDIR)/%,$(STDSETUPFILES))
-DRAWINGSETUPSRC = $(patsubst %,$(SRCDIR)/%,$(DRAWINGSETUPFILES))
-COFFEESRC       = $(patsubst %,$(OTHERDIR)/%,$(COFFEEFILES))
+STYSRC    = $(patsubst %,$(SRCDIR)/%,$(STYFILES))
+CLSSRC    = $(patsubst %,$(SRCDIR)/%,$(CLSFILES))
+COFFEESRC = $(patsubst %,$(OTHERDIR)/%,$(COFFEEFILES))
 
 ## ----------------------------------------
 
-.PHONY: install article std code drawing coffee
+.PHONY: install cp-class class cp-package package cp-bundled bundled
+.PHONY: $(PKGDIR) $(COFFEESRC) $(COFFEEDIR)
 
-install: article std code drawing coffee
+install: cp-class cp-package cp-bundled
 	$(TEXHASH) $(TEXMF)
 
-article: $(CLASSSRC) | $(CLASSDIR)
-	$(COPY) $(CLASSSRC) $(CLASSDIR)
-$(CLASSDIR):
-	$(MKDIR) $(CLASSDIR)
+# install class(es)
+class: cp-class cp-package $(COFFEFILES)
+	$(TEXHASH) $(TEXMF)
+cp-class: $(CLSSRC) | $(PKGDIR)
+	$(COPY) $(CLSSRC) $(PKGDIR)
+# install packages(es)
+package: cp-class
+	$(TEXHASH) $(TEXMF)
+cp-package: $(STYSRC) | $(PKGDIR)
+	$(COPY) $(STYSRC) $(PKGDIR)
 
-std: $(STDSETUPSRC) | $(STDSETUPDIR)
-	$(COPY) $(STDSETUPSRC) $(STDSETUPDIR)
-$(STDSETUPDIR):
-	$(MKDIR) $(STDSETUPDIR)
+# create package directory
+$(PKGDIR):
+	$(MKDIR) $(PKGDIR)
 
-code: $(CODESETUPSRC) | $(CODESETUPDIR)
-	$(COPY) $(CODESETUPSRC) $(CODESETUPDIR)
-$(CODESETUPDIR):
-	$(MKDIR) $(CODESETUPDIR)
+# install bundled packages
+bundled: cp-bundled
+	$(TEXHASH) $(TEXMF)
+cp-bundled: $(COFFEESRC)
 
-drawing: $(DRAWINGSETUPSRC) | $(DRAWINGSETUPDIR)
-	$(COPY) $(DRAWINGSETUPSRC) $(DRAWINGSETUPDIR)
-$(DRAWINGSETUPDIR):
-	$(MKDIR) $(DRAWINGSETUPDIR)
-
-coffee: $(COFFEESRC) | $(COFFEEDIR)
+# install the coffe4 package
+$(COFFEESRC): | $(COFFEEDIR)
 	$(COPY) $(COFFEESRC) $(COFFEEDIR)
 $(COFFEEDIR):
 	$(MKDIR) $(COFFEEDIR)
-

@@ -1,4 +1,4 @@
-%% eistaart.cls
+%% eistaadoc.cls
 %% Copyright 2014 -- Eivind Storm Aarnæs
 %%
 %% This work may be distributed and/or modified under the conditions of the
@@ -12,14 +12,13 @@
 %%
 %% The Current Maintainer of this work is Eivind Storm Aarnæs.
 %%
-%% This work consists of the files eistaart.cls, eistaasetup.sty,
+%% This work consists of the files eistaadoc.cls, eistaasetup.sty,
 %% eistaacode.sty, eistaadrawing.sty and mathletters.sty.
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{eistaart}[2014/10/01 v1.2 My personal article class]
+\ProvidesClass{eistaadoc}[2015/09/11 v2.0.0-dev eistaa's document class]
 
 %% --+-- setup --+-- %% {{{* --------------------------------------------------
 %%   \-----------/
-
 
 %% ----- load key-val stuff
 
@@ -29,50 +28,54 @@
 %% ----- declare options
 
 % load my standard setup
-\define@cmdkey{eistaart.cls}[eistaart@]{eistaasetup}[{%
+\define@cmdkey{eistaadoc.cls}[eistaadoc@]{eistaasetup}[{%
         math,theorems,text,figures,%
         enumitem={inline}%
     }]{}
 % load my code setup
-\define@cmdkey{eistaart.cls}[eistaart@]{eistaacode}[{%
+\define@cmdkey{eistaadoc.cls}[eistaadoc@]{eistaacode}[{%
         minted,xmargins=-1cm%
     }]{}
 % load my drawing setup
-\define@cmdkey{eistaart.cls}[eistaart@]{eistaadrawing}[{%
+\define@cmdkey{eistaadoc.cls}[eistaadoc@]{eistaadrawing}[{%
         tikz%
     }]{}
 
 % whether to use normal fonts (default is to use special setup)
-\define@boolkey{eistaart.cls}[eistaart@]{normalfonts}[true]{}
+\define@boolkey{eistaadoc.cls}[eistaadoc@]{bookstyle}[true]{}
+
+% whether to use normal fonts (default is to use special setup)
+\define@boolkey{eistaadoc.cls}[eistaadoc@]{normalfonts}[true]{}
 
 % language
-\define@cmdkey{eistaart.cls}[eistaart@]{language}{}
+\define@cmdkey{eistaadoc.cls}[eistaadoc@]{language}{}
 
 % xcolor options
-\define@cmdkey{eistaart.cls}[eistaart@]{xcolor}{}
+\define@cmdkey{eistaadoc.cls}[eistaadoc@]{xcolor}{}
 
 % whether to load packages to control references
-\define@boolkey{eistaart.cls}[eistaart@]{referencing}[true]{}
+\define@boolkey{eistaadoc.cls}[eistaadoc@]{referencing}[true]{}
 
 % add coffee stains on front page
-\define@boolkey{eistaart.cls}[eistaart@]{coffee}[true]{}    % load coffee4
-\define@boolkey{eistaart.cls}[eistaart@]{nostains}[true]{}  % no default stains
+\define@boolkey{eistaadoc.cls}[eistaadoc@]{coffee}[true]{}    % load coffee4
+\define@boolkey{eistaadoc.cls}[eistaadoc@]{nostains}[true]{}  % no default stains
 
 % fallback
 \DeclareOptionX*{%
-    \ClassWarning{eistaart}{Unknown option '\CurrentOption'}
+    \ClassWarning{eistaadoc}{Unknown option '\CurrentOption'}
 }
 
 %% ----- set defaults
 
-\setkeys{eistaart.cls}{%
+\setkeys{eistaadoc.cls}{%
     eistaasetup={},%
     eistaacode={},%
     eistaadrawing={},%
-    normalfonts=false,%
-    language=english,%
+    bookstyle={false},%
+    normalfonts={false},%
+    language={english},%
     xcolor={dvipsnames,svgnames,x11names},%
-    referencing=false,%
+    referencing={false},%
     coffee={false},%
     nostains={false},%
 }
@@ -85,36 +88,35 @@
 
 %% setup
 
-\PassOptionsToClass{11pt,\eistaart@language}{article}
+\PassOptionsToClass{11pt,\eistaadoc@language}{book}
 \PassOptionsToPackage{a4paper,twoside,hmarginratio=1:1,margin=1.5in,headheight=15.0pt}%
                      {geometry}
-\PassOptionsToPackage{\eistaart@language}{babel}
+\PassOptionsToPackage{\eistaadoc@language}{babel}
 
-\PassOptionsToPackage{\eistaart@xcolor}{xcolor}
+\PassOptionsToPackage{\eistaadoc@xcolor}{xcolor}
 
 %% my classes
 
-\PassOptionsToPackage{\eistaart@eistaasetup}{eistaasetup}
+\PassOptionsToPackage{\eistaadoc@eistaasetup}{eistaasetup}
 
-\PassOptionsToPackage{\eistaart@eistaacode}{eistaacode}
+\PassOptionsToPackage{\eistaadoc@eistaacode}{eistaacode}
 \PassOptionsToPackage{beramono=false}{eistaacode}  % do it in this class instead
 
-\PassOptionsToPackage{\eistaart@eistaadrawing}{eistaadrawing}
-\PassOptionsToPackage{xcolor={\eistaart@xcolor}}{eistaadrawing}
+\PassOptionsToPackage{\eistaadoc@eistaadrawing}{eistaadrawing}
+\PassOptionsToPackage{xcolor={\eistaadoc@xcolor}}{eistaadrawing}
 %% *}}}
 
 %% --+-- base class & packages --+-- %% {{{* ----------------------------------
 %%   \---------------------------/
 
-
 %% load base class
-\LoadClass{article}
+\LoadClass{book}
 
 % fixes to LaTeX2e
 \RequirePackage{fixltx2e}
 
 % fonts
-\ifeistaart@normalfonts \else
+\ifeistaadoc@normalfonts \else
     % use special fonts
     \RequirePackage[sc]{mathpazo}       % use adobe palatino familly of fonts with true small caps
     \linespread{1.05}                   % palatino needs more leading (space between lines)
@@ -129,7 +131,7 @@
 \RequirePackage{babel}                  % language
 
 % colors
-\ifx\eistaart@xolor\@empty \else
+\ifx\eistaadoc@xolor\@empty \else
     \RequirePackage{xcolor}
 \fi
 
@@ -138,20 +140,20 @@
 \RequirePackage{geometry}               % to mess with page geometry
 \RequirePackage{titlesec}               % to style sections
 \RequirePackage{chngcntr}               % control counters
-\ifeistaart@coffee
+\ifeistaadoc@coffee
     \RequirePackage{coffee4}
 \fi
 
 % my standard setup
-\ifx\eistaart@eistaasetup\@empty \else
+\ifx\eistaadoc@eistaasetup\@empty \else
     \RequirePackage{eistaasetup}
 \fi
 % my code setup
-\ifx\eistaart@eistaacode\@empty \else
+\ifx\eistaadoc@eistaacode\@empty \else
     \RequirePackage{eistaacode}
 \fi
 % my drawing setup
-\ifx\eistaart@eistaadrawing\@empty \else
+\ifx\eistaadoc@eistaadrawing\@empty \else
     \RequirePackage{eistaadrawing}
 \fi
 
@@ -164,7 +166,7 @@
 }
 
 % load referencing packages
-\ifeistaart@referencing
+\ifeistaadoc@referencing
     \RequirePackage[capitalize]{cleveref}
     \RequirePackage{autonum}
 \fi
@@ -172,7 +174,6 @@
 
 %% --+-- titlepage --+-- %% {{{* ----------------------------------------------
 %%   \---------------/
-
 
 %% title command (from amsart class, http://ctan.org/pkg/amsart)
 %% - defines \@shorttitle and \@title commands
@@ -203,40 +204,38 @@
     \expandafter\noexpand\csname\string\author\endcsname}
 \let\@authors\@empty \let\@shortauthors\@empty
 
-
 %% wrapper around date
 \renewcommand*{\date}[1]{\gdef\@date{#1} \let\@@date\@date}
 \let\@date\today \let\@@date\@date
 
 %% ----- titlepage
 
-\renewcommand*{\@maketitle}{
-    \newpage \null \vskip 2em%
-    \begin{minipage}{0.9\textwidth}\begin{center}
-        \rule{1\textwidth}{0.8pt} \par \vskip 1em%
-        \baselineskip 2.5em%
-        {\LARGE\sc\@title}        \par \vskip 1em%
-        \baselineskip 1em%
-        \rule{1\textwidth}{1.2pt} \par \vskip 1em%
-        {\large\sc
-            \lineskip .5em%
-            \begin{tabular}[t]{c}%
-                \@authors
-            \end{tabular} \par}
-    \end{center}\end{minipage}
-    \vskip 1em%
-    \ifeistaart@coffee
-        \ifeistaart@nostains \else
-            \cofeAm{0.1}{1.0}{0}{4.5cm}{10.2cm}
-            \cofeCm{0.4}{0.7}{155}{0.0cm}{12.0cm}
-        \fi
-    \fi
-}
+% \renewcommand*{\@maketitle}{
+%     \newpage \null \vskip 2em%
+%     \begin{minipage}{0.9\textwidth}\begin{center}
+%         \rule{1\textwidth}{0.8pt} \par \vskip 1em%
+%         \baselineskip 2.5em%
+%         {\LARGE\sc\@title}        \par \vskip 1em%
+%         \baselineskip 1em%
+%         \rule{1\textwidth}{1.2pt} \par \vskip 1em%
+%         {\large\sc
+%             \lineskip .5em%
+%             \begin{tabular}[t]{c}%
+%                 \@authors
+%             \end{tabular} \par}
+%     \end{center}\end{minipage}
+%     \vskip 1em%
+%     \ifeistaadoc@coffee
+%         \ifeistaadoc@nostains \else
+%             \cofeAm{0.1}{1.0}{0}{4.5cm}{10.2cm}
+%             \cofeCm{0.4}{0.7}{155}{0.0cm}{12.0cm}
+%         \fi
+%     \fi
+% }
 %% *}}}
 
 %% --+-- styling --+-- %% {{{* ------------------------------------------------
 %%   \-------------/
-
 
 %% ----- labels & numbering
 
@@ -288,13 +287,21 @@
     \renewcommand{\footrulewidth}{0.5pt}
 }
 
-
 %% ----- sections
 
 % used to add a period after runin sections
 \newcommand{\@periodafter}[1]{#1.}
 
+% chapter
+\renewcommand{\thechapter}{\Roman{chapter}}
+\titleformat{\chapter}[display]% command & shape
+    {\normalfont\Large\sc}% format
+    {\filleft\MakeUppercase{\chaptertitlename} \Huge\thechapter}% label
+    {1em}% separator between label & title body
+    {\normalsize\hrule\vspace{1em}\filright\Large}% before code
+    [\normalsize\vspace{1em}\hrule]% after code
 % section
+\renewcommand{\thesection}{\arabic{chapter}.\arabic{chapter}}
 \titleformat{\section}[hang]% command & shape
     {\normalfont\large\filcenter\sc}% format
     {\thesection.}% label
@@ -327,4 +334,3 @@
 %% *}}}
 
 \endinput
-
