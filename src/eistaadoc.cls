@@ -41,7 +41,7 @@
         tikz%
     }]{}
 
-% whether to use normal fonts (default is to use special setup)
+% whether to format as a book, if false: approximate an article using book class
 \define@boolkey{eistaadoc.cls}[eistaadoc@]{bookstyle}[true]{}
 
 % whether to use normal fonts (default is to use special setup)
@@ -89,8 +89,27 @@
 %% setup
 
 \PassOptionsToClass{11pt,\eistaadoc@language}{book}
-\PassOptionsToPackage{a4paper,twoside,hmarginratio=1:1,margin=1.5in,headheight=15.0pt}%
-                     {geometry}
+
+\ifeistaadoc@bookstyle% options depending on whether this is a book or not
+    \PassOptionsToClass{titlepage,openright,twoside}{book}
+    \PassOptionsToPackage{%
+            a4paper,twoside,%
+            hmarginratio=2:3,vmarginratio=2:3,% margin ratio: inner:outer
+            outer=4.0cm,% outer margin width
+            marginparsep=0.5cm,marginparwidth=3.0cm,% margin notes separator- and text width
+            headsep=0.5cm,headheight=15.0pt% header separator- and text height
+        }{geometry}
+\else
+    \PassOptionsToClass{notitlepage,openany}{book}
+    \PassOptionsToPackage{%
+            a4paper,reversemarginpar,%
+            hmarginratio=1:1,vmarginratio=2:3,%
+            hmargin=4.0cm,% equal horizontal margins
+            marginparsep=0.5cm,marginparwidth=3.0cm,% margin notes separator- and text width
+            headsep=0.5cm,headheight=15.0pt% header separator- and text height
+        }{geometry}
+\fi
+
 \PassOptionsToPackage{\eistaadoc@language}{babel}
 
 \PassOptionsToPackage{\eistaadoc@xcolor}{xcolor}
@@ -143,6 +162,9 @@
 \ifeistaadoc@coffee
     \RequirePackage{coffee4}
 \fi
+
+ % usefull
+ \RequirePackage{marginnote}            % for typing margin notes
 
 % my standard setup
 \ifx\eistaadoc@eistaasetup\@empty \else
@@ -210,32 +232,64 @@
 
 %% ----- titlepage
 
-% \renewcommand*{\@maketitle}{
-%     \newpage \null \vskip 2em%
-%     \begin{minipage}{0.9\textwidth}\begin{center}
-%         \rule{1\textwidth}{0.8pt} \par \vskip 1em%
-%         \baselineskip 2.5em%
-%         {\LARGE\sc\@title}        \par \vskip 1em%
-%         \baselineskip 1em%
-%         \rule{1\textwidth}{1.2pt} \par \vskip 1em%
-%         {\large\sc
-%             \lineskip .5em%
-%             \begin{tabular}[t]{c}%
-%                 \@authors
-%             \end{tabular} \par}
-%     \end{center}\end{minipage}
-%     \vskip 1em%
-%     \ifeistaadoc@coffee
-%         \ifeistaadoc@nostains \else
-%             \cofeAm{0.1}{1.0}{0}{4.5cm}{10.2cm}
-%             \cofeCm{0.4}{0.7}{155}{0.0cm}{12.0cm}
-%         \fi
-%     \fi
-% }
+\ifeistaadoc@bookstyle
+    \renewcommand*{\maketitle}{
+        \begin{titlepage}
+            \null \vskip 2em%
+            \begin{minipage}{0.9\textwidth}\begin{center}
+                \rule{1\textwidth}{0.8pt} \par \vskip 1em%
+                \baselineskip 2.5em%
+                {\LARGE\sc\@title}        \par \vskip 1em%
+                \baselineskip 1em%
+                \rule{1\textwidth}{1.2pt} \par \vskip 1em%
+                {\large\sc
+                    \lineskip .5em%
+                    \begin{tabular}[t]{c}%
+                        \@authors
+                    \end{tabular} \par}
+            \end{center}\end{minipage}
+            \vskip 1em%
+            \ifeistaadoc@coffee
+                \ifeistaadoc@nostains \else
+                    \cofeAm{0.1}{1.0}{0}{4.5cm}{10.2cm}
+                    \cofeCm{0.4}{0.7}{155}{0.0cm}{12.0cm}
+                \fi
+            \fi
+        \end{titlepage}
+    }
+\else
+    \renewcommand*{\@maketitle}{
+        \newpage \null \vskip 2em%
+        \begin{minipage}{0.9\textwidth}\begin{center}
+            \rule{1\textwidth}{0.8pt} \par \vskip 1em%
+            \baselineskip 2.5em%
+            {\LARGE\sc\@title}        \par \vskip 1em%
+            \baselineskip 1em%
+            \rule{1\textwidth}{1.2pt} \par \vskip 1em%
+            {\large\sc
+                \lineskip .5em%
+                \begin{tabular}[t]{c}%
+                    \@authors
+                \end{tabular} \par}
+        \end{center}\end{minipage}
+        \vskip 1em%
+        \ifeistaadoc@coffee
+            \ifeistaadoc@nostains \else
+                \cofeAm{0.1}{1.0}{0}{4.5cm}{10.2cm}
+                \cofeCm{0.4}{0.7}{155}{0.0cm}{12.0cm}
+            \fi
+        \fi
+    }
+\fi
 %% *}}}
 
 %% --+-- styling --+-- %% {{{* ------------------------------------------------
 %%   \-------------/
+
+%% ----- marginnotes
+
+% change the fontsize
+\renewcommand*{\marginfont}{\footnotesize}
 
 %% ----- labels & numbering
 
@@ -301,7 +355,7 @@
     {\normalsize\hrule\vspace{1em}\filright\Large}% before code
     [\normalsize\vspace{1em}\hrule]% after code
 % section
-\renewcommand{\thesection}{\arabic{chapter}.\arabic{chapter}}
+\renewcommand{\thesection}{\arabic{chapter}.\arabic{section}}
 \titleformat{\section}[hang]% command & shape
     {\normalfont\large\filcenter\sc}% format
     {\thesection.}% label
