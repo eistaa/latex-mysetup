@@ -56,6 +56,9 @@
 % whether to load packages to control references
 \define@boolkey{eistaadoc.cls}[eistaadoc@]{referencing}[true]{}
 
+% whether to hide all todo-notes
+\define@boolkey{eistaadoc.cls}[eistaadoc@]{notodo}[true]{}
+
 % add coffee stains on front page
 \define@boolkey{eistaadoc.cls}[eistaadoc@]{coffee}[true]{}    % load coffee4
 \define@boolkey{eistaadoc.cls}[eistaadoc@]{nostains}[true]{}  % no default stains
@@ -76,6 +79,7 @@
     language={english},%
     xcolor={dvipsnames,svgnames,x11names},%
     referencing={false},%
+    notodo={false},%
     coffee={false},%
     nostains={false},%
 }
@@ -163,7 +167,7 @@
     \RequirePackage{coffee4}
 \fi
 
- % usefull
+ % used for TODOS
  \RequirePackage{marginnote}            % for typing margin notes
 
 % my standard setup
@@ -290,6 +294,13 @@
 
 % change the fontsize
 \renewcommand*{\marginfont}{\footnotesize}
+
+% todo-notes
+\newcommand*{\todonote}[1]{%
+    \ifeistaadoc@notodo \else
+        \marginnote{\color{red}{TODO: #1}}
+    \fi
+}
 
 %% ----- labels & numbering
 
