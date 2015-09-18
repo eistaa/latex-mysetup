@@ -27,6 +27,8 @@
 
 %% ----- declare options
 
+%% my packages
+
 % load my standard setup
 \define@cmdkey{eistaadoc.cls}[eistaadoc@]{eistaasetup}[{%
         math,theorems,text,figures,%
@@ -41,27 +43,36 @@
         tikz%
     }]{}
 
+%% styling
+
 % whether to format as a book, if false: approximate an article using book class
 \define@boolkey{eistaadoc.cls}[eistaadoc@]{bookstyle}[true]{}
-
 % whether to use normal fonts (default is to use special setup)
 \define@boolkey{eistaadoc.cls}[eistaadoc@]{normalfonts}[true]{}
-
 % language
 \define@cmdkey{eistaadoc.cls}[eistaadoc@]{language}{}
-
-% xcolor options
-\define@cmdkey{eistaadoc.cls}[eistaadoc@]{xcolor}{}
-
 % whether to load packages to control references
 \define@boolkey{eistaadoc.cls}[eistaadoc@]{referencing}[true]{}
+
+%% functionality
 
 % whether to hide all todo-notes
 \define@boolkey{eistaadoc.cls}[eistaadoc@]{notodo}[true]{}
 
+%% coffee?
+
 % add coffee stains on front page
 \define@boolkey{eistaadoc.cls}[eistaadoc@]{coffee}[true]{}    % load coffee4
 \define@boolkey{eistaadoc.cls}[eistaadoc@]{nostains}[true]{}  % no default stains
+
+%% package options
+
+% nomencl options
+\define@boolkey{eistaadoc.cls}[eistaadoc@]{nonomencl}[true]{}  % no default stains
+\define@cmdkey{eistaadoc.cls}[eistaadoc@]{nomencl}{}
+% xcolor options
+\define@boolkey{eistaadoc.cls}[eistaadoc@]{noxcolor}[true]{}  % no default stains
+\define@cmdkey{eistaadoc.cls}[eistaadoc@]{xcolor}{}
 
 % fallback
 \DeclareOptionX*{%
@@ -77,11 +88,14 @@
     bookstyle={false},%
     normalfonts={false},%
     language={english},%
-    xcolor={dvipsnames,svgnames,x11names},%
     referencing={false},%
     notodo={false},%
     coffee={false},%
     nostains={false},%
+    nonomencl={false},%
+    nomencl={norefeq,refpage,noprefix,intoc},%
+    noxcolor={false},%
+    xcolor={dvipsnames,svgnames,x11names},%
 }
 
 %% ----- process given options
@@ -117,6 +131,8 @@
 \PassOptionsToPackage{\eistaadoc@language}{babel}
 
 \PassOptionsToPackage{\eistaadoc@xcolor}{xcolor}
+
+\PassOptionsToPackage{\eistaadoc@nomencl}{nomencl}
 
 %% my classes
 
@@ -154,7 +170,7 @@
 \RequirePackage{babel}                  % language
 
 % colors
-\ifx\eistaadoc@xolor\@empty \else
+\ifeistaadoc@noxcolor \else
     \RequirePackage{xcolor}
 \fi
 
@@ -195,6 +211,11 @@
 \ifeistaadoc@referencing
     \RequirePackage[capitalize]{cleveref}
     \RequirePackage{autonum}
+\fi
+
+% load nomencl
+\ifeistaadoc@nonomencl \else
+    \RequirePackage{nomencl}
 \fi
 %% *}}}
 
@@ -324,6 +345,11 @@
 \setlist[itemize]    {noitemsep,topsep=0pt,parsep=0pt,partopsep=0pt}
 % add : after description label and make it boldface
 \renewcommand{\descriptionlabel}[1]{\hspace{\labelsep}\textbf{#1:}}
+
+%% ----- nomenclature/list of symbols
+
+% change title to "List of Symbols"
+\renewcommand*{\nomname}{List of Symbols}
 
 %% ----- header and footer
 
