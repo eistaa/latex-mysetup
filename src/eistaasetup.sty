@@ -182,9 +182,6 @@
     \newcommand{\mrm}{\mathrm}
     \newcommand{\msf}{\mathsf}
 
-    % integral d
-    \newcommand{\dd}[1]{\,\mathrm{d}#1}
-
     % ----- paired stuff
 
     % bracket
@@ -201,19 +198,19 @@
 
     %% ----- notation
 
-    % halting problem
-    \newcommand{\HP} {\mathcal{HP}}% halting problem
-    \newcommand{\DHP}{\mathcal{DHP}}% diagonal halting problem
+    % differential d's
+    \newcommand*{\dd}[1]{\,\mathrm{d}#1}
+    \newcommand*{\pd}[1]{\,\partial{}#1}
 
     % vector and matrix style
-    \providecommand\Vec{} \renewcommand{\Vec}[1]{\mbf{#1}}
-    \providecommand\Mat{} \renewcommand{\Mat}[1]{\mbf{#1}}
+    \providecommand*\vec{} \renewcommand*{\vec}[1]{\mbf{#1}}
+    \providecommand*\mat{} \renewcommand*{\mat}[1]{\mbf{#1}}
+
+    %% ----- new/modified symbols
 
     % operators
     \DeclareMathOperator{\seg}{seg}
     \DeclareMathOperator{\ord}{ord}
-
-    %% ----- new/modified symbols
 
     % quantifiers
     \newcommand{\existsall}{\ensuremath% EXISTS over FOR ALL
@@ -240,4 +237,3 @@
 %% *}}}
 
 \endinput
-
