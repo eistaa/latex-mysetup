@@ -93,7 +93,7 @@
     coffee={false},%
     nostains={false},%
     nonomencl={false},%
-    nomencl={norefeq,refpage,noprefix,intoc},%
+    nomencl={norefeq,norefpage,noprefix,intoc},%
     noxcolor={false},%
     xcolor={dvipsnames,svgnames,x11names},%
 }
@@ -332,9 +332,10 @@
 
 % equation label
 \@ifpackagewith{eistaasetup}{math}{
-    \let\old@tagform@\tagform@
-    \def\tagform@#1{\hspace{0.1pt}\rlap{\hspace{0.5em}\old@tagform@{#1}}}
-    \renewcommand{\eqref}[1]{\textup{\old@tagform@{\ref{#1}}}}
+    % \let\old@tagform@=\tagform@
+    % \def\tagform@#1{\maketag@@@{\hbox{\rlap{(\ignorespaces#1\unskip\@@italiccorr)\hspace{1mm}}}}\kern1sp}
+    % %\def\tagform@#1{\hspace{0.1pt}\rlap{\hspace{0.5em}\old@tagform@{#1}}}
+    % \renewcommand{\eqref}[1]{\textup{\old@tagform@{\ref{#1}}}}
 }{ }
 
 %% ----- list style
@@ -370,7 +371,9 @@
 \fancypagestyle{plain}{%
     \fancyhf{} % clear
     % only date on first page
-    \fancyfoot[L]{\ifthenelse{\value{page}=1}{\textit{Date:} \@@date}{}}
+    \ifeistaadoc@bookstyle \else
+        \fancyfoot[L]{\ifthenelse{\value{page}=1}{\textit{Date:} \@@date}{}}
+    \fi
     % pagenumber on every page
     \fancyfoot[C]{\thepage}
     % no header line but this footer line
