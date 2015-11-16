@@ -332,6 +332,18 @@
 
 % equation label
 \@ifpackagewith{eistaasetup}{math}{
+    % %redefine tag placement
+    % \def\place@tag{%
+    %     \iftagsleft@
+    %         \kern-\tagshift@
+    %         \rlap{\boxz@}%
+    %         \kern\displaywidth@
+    %     \else
+    %         \kern-\tagshift@
+    %         \llap{\boxz@}%
+    %     \fi
+    % }
+    % % redefine tag style
     % \let\old@tagform@=\tagform@
     % \def\tagform@#1{\maketag@@@{\hbox{\rlap{(\ignorespaces#1\unskip\@@italiccorr)\hspace{1mm}}}}\kern1sp}
     % %\def\tagform@#1{\hspace{0.1pt}\rlap{\hspace{0.5em}\old@tagform@{#1}}}
