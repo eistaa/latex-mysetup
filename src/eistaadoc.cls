@@ -348,7 +348,7 @@
     }
     % redefine tag style
     \let\old@tagform@=\tagform@
-    \def\tagform@#1{\maketag@@@{\hbox{\rlap{\hspace{1mm}\quad(\ignorespaces#1\unskip\@@italiccorr)}}}\kern1sp}
+    \def\tagform@#1{\maketag@@@{\hbox{\rlap{\hspace{1mm}(\ignorespaces#1\unskip\@@italiccorr)}}}\kern1sp}
     \renewcommand{\eqref}[1]{\textup{\old@tagform@{\ref{#1}}}}
 }{ }
 
