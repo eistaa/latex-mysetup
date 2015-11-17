@@ -336,7 +336,46 @@
 % equation label
 \@ifpackagewith{eistaasetup}{math}{
     \ifeistaadoc@marginlabels
-        %redefine tag placement (modified from amsmath)
+        % redefine tag placement for equation
+        \def\mathdisplay#1{%
+            \ifmmode \@badmath
+            \else
+                $$\def\@currenvir{#1}%
+                \let\dspbrk@context\z@
+                \let\tag\tag@in@display \let\label\label@in@display \SK@equationtrue
+                \global\let\df@label\@empty \global\let\df@tag\@empty
+                \global\tag@false
+                \let\mathdisplay@push\mathdisplay@@push
+                \let\mathdisplay@pop\mathdisplay@@pop
+                \setbox\z@\hbox to\displaywidth\bgroup
+                \if@fleqn
+                    \edef\restore@hfuzz{\hfuzz\the\hfuzz\relax}%
+                    \hfuzz\maxdimen
+                    \let\split@warning\relax \restore@hfuzz
+                    \everymath\@emptytoks \m@th
+                \fi
+                $\displaystyle
+            \fi
+        }
+        \def\endmathdisplay@a{%
+            \if@eqnsw \gdef\df@tag{\tagform@\theequation}\fi
+            \if@fleqn \@xp\endmathdisplay@fleqn
+            \else
+                $\hskip\@mathmargin\egroup
+                \setbox4\hbox{\df@tag
+                    \ifx\df@label\@empty \else \@xp\ltx@label\@xp{\df@label}\fi
+                }%
+                \setbox\tw@\hbox to\displaywidth{%
+                    \hskip\@mathmargin \unhcopy\z@\hskip\mintagsep\copy4
+                }%
+                \box\tw@
+            \fi
+            \ifnum\dspbrk@lvl>\m@ne
+                \postdisplaypenalty -\@getpen\dspbrk@lvl
+                \global\dspbrk@lvl\m@ne
+            \fi
+        }
+        % redefine tag placement for align-type enviroments (modified from amsmath)
         \def\place@tag{%
             \iftagsleft@
                 \kern-\tagshift@
