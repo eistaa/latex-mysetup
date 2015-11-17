@@ -53,6 +53,8 @@
 \define@cmdkey{eistaadoc.cls}[eistaadoc@]{language}{}
 % whether to load packages to control references
 \define@boolkey{eistaadoc.cls}[eistaadoc@]{referencing}[true]{}
+% whether to place equation labels in the margin
+\define@boolkey{eistaadoc.cls}[eistaadoc@]{marginlabels}[true]{}
 
 %% functionality
 
@@ -89,6 +91,7 @@
     normalfonts={false},%
     language={english},%
     referencing={false},%
+    marginlabels={false},%
     notodo={false},%
     coffee={false},%
     nostains={false},%
@@ -332,22 +335,21 @@
 
 % equation label
 \@ifpackagewith{eistaasetup}{math}{
-    % %redefine tag placement
-    % \def\place@tag{%
-    %     \iftagsleft@
-    %         \kern-\tagshift@
-    %         \rlap{\boxz@}%
-    %         \kern\displaywidth@
-    %     \else
-    %         \kern-\tagshift@
-    %         \llap{\boxz@}%
-    %     \fi
-    % }
-    % % redefine tag style
-    % \let\old@tagform@=\tagform@
-    % \def\tagform@#1{\maketag@@@{\hbox{\rlap{(\ignorespaces#1\unskip\@@italiccorr)\hspace{1mm}}}}\kern1sp}
-    % %\def\tagform@#1{\hspace{0.1pt}\rlap{\hspace{0.5em}\old@tagform@{#1}}}
-    % \renewcommand{\eqref}[1]{\textup{\old@tagform@{\ref{#1}}}}
+    %redefine tag placement (modified from amsmath)
+    \def\place@tag{%
+        \iftagsleft@
+            \kern-\tagshift@
+            \rlap{\boxz@}%
+            \kern\displaywidth@
+        \else
+            \kern-\tagshift@
+            \llap{\boxz@}%
+        \fi
+    }
+    % redefine tag style
+    \let\old@tagform@=\tagform@
+    \def\tagform@#1{\maketag@@@{\hbox{\rlap{(\ignorespaces#1\unskip\@@italiccorr)\hspace{1mm}}}}\kern1sp}
+    \renewcommand{\eqref}[1]{\textup{\old@tagform@{\ref{#1}}}}
 }{ }
 
 %% ----- list style
