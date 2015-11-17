@@ -335,7 +335,7 @@
 
 % equation label
 \@ifpackagewith{eistaasetup}{math}{
-    \ifeistadoc@marginlabels
+    \ifeistaadoc@marginlabels
         %redefine tag placement (modified from amsmath)
         \def\place@tag{%
             \iftagsleft@
