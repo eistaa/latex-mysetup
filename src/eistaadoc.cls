@@ -444,10 +444,10 @@
 % chapter
 \renewcommand{\thechapter}{\Roman{chapter}}
 \titleformat{\chapter}[display]% command & shape
-    {\normalfont\Large\sc}% format
-    {\filleft\MakeUppercase{\chaptertitlename} \Huge\thechapter}% label
+    {\normalfont\huge\sc}% format
+    {\filleft\MakeUppercase{\chaptertitlename} {\fontsize{2.0em}{2.5em}\selectfont \thechapter}}% label
     {1em}% separator between label & title body
-    {\normalsize\hrule\vspace{1em}\filright\Large}% before code
+    {\normalsize\hrule\vspace{1em}\filright\huge}% before code
     [\normalsize\vspace{1em}\hrule]% after code
 % section
 \renewcommand{\thesection}{\arabic{chapter}.\arabic{section}}
