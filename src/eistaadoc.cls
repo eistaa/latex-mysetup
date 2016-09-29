@@ -51,8 +51,6 @@
 \define@boolkey{eistaadoc.cls}[eistaadoc@]{normalfonts}[true]{}
 % language
 \define@cmdkey{eistaadoc.cls}[eistaadoc@]{language}{}
-% whether to load packages to control references
-\define@boolkey{eistaadoc.cls}[eistaadoc@]{referencing}[true]{}
 % whether to place equation labels in the margin
 \define@boolkey{eistaadoc.cls}[eistaadoc@]{marginlabels}[true]{}
 
@@ -60,6 +58,9 @@
 
 % whether to hide all todo-notes
 \define@boolkey{eistaadoc.cls}[eistaadoc@]{notodo}[true]{}
+% whether to load packages to control references
+\define@boolkey{eistaadoc.cls}[eistaadoc@]{loadautonum}[true]{}
+\define@boolkey{eistaadoc.cls}[eistaadoc@]{loadcleverref}[true]{}
 
 %% coffee?
 
@@ -90,9 +91,10 @@
     bookstyle={false},%
     normalfonts={false},%
     language={english},%
-    referencing={false},%
     marginlabels={false},%
     notodo={false},%
+    loadautonum={false},%
+    loadcleverref={false},%
     coffee={false},%
     nostains={false},%
     nonomencl={false},%
@@ -211,8 +213,10 @@
 }
 
 % load referencing packages
-\ifeistaadoc@referencing
+\ifeistaadoc@loadcleverref
     \RequirePackage[capitalize]{cleveref}
+\fi
+\ifeistaadoc@loadautonum
     \RequirePackage{autonum}
 \fi
 
