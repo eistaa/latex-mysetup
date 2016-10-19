@@ -115,9 +115,9 @@
     \PassOptionsToClass{titlepage,openright,twoside}{book}
     \PassOptionsToPackage{%
             a4paper,twoside,%
-            hmarginratio=2:3,vmarginratio=2:3,% margin ratio: inner:outer
-            outer=4.0cm,% outer margin width
-            marginparsep=0.5cm,marginparwidth=3.0cm,% margin notes separator- and text width
+            hmarginratio=3:2,vmarginratio=2:3,% margin ratio: inner:outer / upper:lower
+            inner=4.0cm,% outer margin width
+            marginparsep=0.5cm,marginparwidth=2.0cm,% margin notes separator- and text width
             headsep=0.5cm,headheight=15.0pt% header separator- and text height
         }{geometry}
 \else
