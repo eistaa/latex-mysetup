@@ -183,6 +183,7 @@
 \RequirePackage{fancyhdr}               % to create custom header/footers
 \RequirePackage{geometry}               % to mess with page geometry
 \RequirePackage{titlesec}               % to style sections
+\RequirePackage{titletoc}               % to style table of contents
 \RequirePackage{chngcntr}               % control counters
 \ifeistaadoc@coffee
     \RequirePackage{coffee4}
@@ -439,6 +440,10 @@
     \renewcommand{\headrulewidth}{0pt}
     \renewcommand{\footrulewidth}{0.5pt}
 }
+%% ----- table of contents
+
+\dottedcontents{chapter}[2.5em]{\vspace{1em}\bf}{2.3em}{1pc}
+
 
 %% ----- sections
 
