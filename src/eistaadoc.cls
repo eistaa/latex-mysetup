@@ -51,8 +51,6 @@
 \define@boolkey{eistaadoc.cls}[eistaadoc@]{normalfonts}[true]{}
 % language
 \define@cmdkey{eistaadoc.cls}[eistaadoc@]{language}{}
-% whether to load packages to control references
-\define@boolkey{eistaadoc.cls}[eistaadoc@]{referencing}[true]{}
 % whether to place equation labels in the margin
 \define@boolkey{eistaadoc.cls}[eistaadoc@]{marginlabels}[true]{}
 
@@ -60,6 +58,9 @@
 
 % whether to hide all todo-notes
 \define@boolkey{eistaadoc.cls}[eistaadoc@]{notodo}[true]{}
+% whether to load packages to control references
+\define@boolkey{eistaadoc.cls}[eistaadoc@]{loadautonum}[true]{}
+\define@boolkey{eistaadoc.cls}[eistaadoc@]{loadcleverref}[true]{}
 
 %% coffee?
 
@@ -90,9 +91,10 @@
     bookstyle={false},%
     normalfonts={false},%
     language={english},%
-    referencing={false},%
     marginlabels={false},%
     notodo={false},%
+    loadautonum={false},%
+    loadcleverref={false},%
     coffee={false},%
     nostains={false},%
     nonomencl={false},%
@@ -211,8 +213,10 @@
 }
 
 % load referencing packages
-\ifeistaadoc@referencing
+\ifeistaadoc@loadcleverref
     \RequirePackage[capitalize]{cleveref}
+\fi
+\ifeistaadoc@loadautonum
     \RequirePackage{autonum}
 \fi
 
@@ -444,10 +448,10 @@
 % chapter
 \renewcommand{\thechapter}{\Roman{chapter}}
 \titleformat{\chapter}[display]% command & shape
-    {\normalfont\Large\sc}% format
-    {\filleft\MakeUppercase{\chaptertitlename} \Huge\thechapter}% label
+    {\normalfont\huge\sc}% format
+    {\filleft\MakeUppercase{\chaptertitlename} {\fontsize{2.0em}{2.5em}\selectfont \thechapter}}% label
     {1em}% separator between label & title body
-    {\normalsize\hrule\vspace{1em}\filright\Large}% before code
+    {\normalsize\hrule\vspace{1em}\filright\huge}% before code
     [\normalsize\vspace{1em}\hrule]% after code
 % section
 \renewcommand{\thesection}{\arabic{chapter}.\arabic{section}}
